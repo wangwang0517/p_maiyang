@@ -1,12 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <div v-if="$route.meta.keepAlive">
-        <router-link to="/home">Home</router-link>
-        <router-link to="/login">Login</router-link>
-        <router-link to="/about">About</router-link>
-      </div>
-      <router-view v-if="!$route.meta.keepAlive"></router-view>
+      <router-view></router-view>
     </div>
   </div>
 </template>

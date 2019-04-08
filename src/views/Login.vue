@@ -16,12 +16,12 @@
 </template>
 
 <script>
+import { login } from '../service/loadData'
 
 export default {
   name: 'login',
   data () {
     let validatePassword = (rule, value, callback) => {
-      console.info(`password is ${value}`)
       if (value === '') {
         callback(new Error('请输入密码'))
       } else if (value.length < 6) {
@@ -31,7 +31,6 @@ export default {
       }
     }
     let validateUsername = (rule, value, callback) => {
-      console.info(`username is ${value}`)
       if (value === '') {
         callback(new Error('请输入用户名'))
       } else {
@@ -40,8 +39,8 @@ export default {
     }
     return {
       loginForm: {
-        username: '',
-        password: ''
+        username: 'admin',
+        password: '123456'
       },
       loginRules: {
         username: [
@@ -55,13 +54,13 @@ export default {
   },
   methods: {
     submitForm (formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!')
-        } else {
-          console.log('error submit!!')
+      this.$refs[formName].validate(async valid => {
+        if (!valid) {
           return false
         }
+        let userInfo = await login(this.loginForm)
+        this.$store.commit('setUserInfo', userInfo)
+        this.$router.push('/home')
       })
     }
   }
