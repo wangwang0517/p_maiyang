@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     userInfo: window.localStorage.getItem('userInfo') || null,
-    isLogin: window.localStorage.getItem('userInfo')  ? true:false
+    isLogin: !!window.localStorage.getItem('userInfo')
   },
   getters: {
 
