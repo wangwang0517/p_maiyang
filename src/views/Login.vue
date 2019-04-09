@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <img alt="Vue logo" src="../assets/logo.png">
+    <img alt="Vue logo" class="logo" src="../assets/logo.png">
     <el-form :model="loginForm" :rules="loginRules" ref="loginForm" class="login-form" >
       <el-form-item prop="username">
         <el-input v-model="loginForm.username" placeholder="用户名"></el-input>
@@ -67,11 +67,21 @@ export default {
 }
 </script>
 <style lang="scss">
-.login-form{
-  width: 300px;
-  margin: 0 auto;
-  padding: 50px;
-}
+  .login{
+    background: #fff;
+    border-radius: 5px;
+    width: 400px;
+    margin: 100px auto;
+    padding: 50px;
+    .logo{
+      display: block;
+      max-width: 50%;
+      margin: 0 auto;
+    }
+    .login-form{
+      padding: 20px;
+    }
+  }
   .submit-button{
     display: block;
     width: 100%;

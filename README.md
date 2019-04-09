@@ -27,3 +27,6 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+https://fontawesome.com/icons?d=gallery&q=his&s=brands,light,regular,solid&m=free

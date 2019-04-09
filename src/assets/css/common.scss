@@ -60,6 +60,7 @@ html,body{
   clear: both;
 }
 
+
 .line{
   height: 1px;
   background-color: #e0e6ed;
@@ -82,17 +83,18 @@ html,body{
   min-height: calc(100vh - 80px);
 }
 .myml-side-bar{
+  max-width: 200px;
+  width: auto;
   margin-left: 10px;
   border-radius: 4px;
   height: auto;
   overflow: hidden;
-  .el-submenu .el-menu{
-    overflow: hidden;
-  }
 }
+
 .myml-main{
   background: #fff;
   margin: 0 10px;
+  padding: 20px;
   border-radius: 4px;
   height: auto;
   overflow: hidden;
