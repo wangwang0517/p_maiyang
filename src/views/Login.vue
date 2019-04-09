@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { login } from '../service/loadData'
+import { login } from '../api/user'
 
 export default {
   name: 'login',

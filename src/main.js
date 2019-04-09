@@ -11,18 +11,27 @@ Vue.use(ElementUI)
 Vue.config.productionTip = true
 
 router.beforeEach((to, from, next) => {
-  if (!store.state.isLogin) {
-    next({ path: '/login' })
+  if (to.path === '/login') {
+    next()
+  } else if (!store.state.isLogin) {
+    next({ path: 'login' })
+  } else if (to.path === '/logout') {
+    vm.$confirm('确认退出登录?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+      next({ path: 'login' })
+      store.commit('clearUserInfo')
+    }).catch(() => {
+
+    })
   } else {
-    if (to.path === '/login') {
-      next({ path: '/home' })
-    } else {
-      next()
-    }
+    next()
   }
 })
 
-new Vue({
+const vm = new Vue({
   router,
   store,
   render: h => h(App)

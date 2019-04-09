@@ -5,22 +5,14 @@
     text-color="#fff"
     active-text-color="#fff"
     router>
-    <el-menu-item route="/home">首页</el-menu-item>
-    <el-menu-item  class="logout" route="/logout">退出</el-menu-item>
+    <el-menu-item class="logo" index="home">首页</el-menu-item>
+    <el-menu-item  class="logout" index="logout">退出</el-menu-item>
   </el-menu>
 </template>
 
 <script>
 export default {
-  name: 'Header',
-  data () {
-    return {}
-  },
-  methods: {
-    handleSelect (key) {
-      console.log(key)
-    }
-  }
+  name: 'Header'
 }
 </script>
 

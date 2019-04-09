@@ -1,13 +1,9 @@
+*{
+  box-sizing: border-box;
+}
 body, div, span, header, footer, nav, section, aside, article, ul, dl, dt, dd, li, a, p, h1, h2, h3, h4,h5, h6, i, b, textarea, button, input, select, figure, figcaption{
   padding: 0;
   margin: 0;
-  list-style: none;
-  font-style: normal;
-  text-decoration: none;
-  border: none;
-  color: #333;
-  font-weight: normal;
-  font-family: "Microsoft Yahei";
   box-sizing: border-box;
   -webkit-tap-highlight-color:transparent;
   -webkit-font-smoothing: antialiased;
@@ -64,11 +60,40 @@ html,body{
   clear: both;
 }
 
-
+.line{
+  height: 1px;
+  background-color: #e0e6ed;
+  margin: 20px -20px;
+  transform: scaleY(0.5);
+}
 
 .myml-header{
   padding: 0;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+  .logo{
+    border-bottom-color: transparent !important;
+  }
   .logout{
     float: right;
   }
+}
+.myml-container{
+  min-height: calc(100vh - 80px);
+}
+.myml-side-bar{
+  margin-left: 10px;
+  border-radius: 4px;
+  height: auto;
+  overflow: hidden;
+  .el-submenu .el-menu{
+    overflow: hidden;
+  }
+}
+.myml-main{
+  background: #fff;
+  margin: 0 10px;
+  border-radius: 4px;
+  height: auto;
+  overflow: hidden;
 }
