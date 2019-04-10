@@ -36,6 +36,17 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="医护" prop="doctor_nurse">
+        <el-select v-model="patientForm.doctor_nurse" filterable multiple placeholder="请选择医护" style="width: 100%">
+          <el-option
+            v-for="item in doctorNurseList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+            <span><el-tag size="mini">{{ item.work }}</el-tag>  {{ item.label }}</span>
+          </el-option>
+        </el-select>
+      </el-form-item>
 
       <el-form-item>
         <el-button type="primary" @click="submitForm('patientForm')">提交</el-button>
@@ -57,12 +68,14 @@ export default {
     return {
       deviceList: [],
       procedureList: [],
+      doctorNurseList: [],
       patientForm: {
         username: '',
         hospitalizationNumber: '',
         bedNumber: '',
         device: '',
-        procedure: ''
+        procedure: '',
+        doctor_nurse: []
       },
       patientFormRules: {
         username: [
@@ -118,6 +131,27 @@ export default {
       label: '设备五'
     }]
 
+    this.doctorNurseList = [{
+      value: '1',
+      label: '张三',
+      work: '护士'
+    }, {
+      value: '2',
+      label: '李四',
+      work: '院长'
+    }, {
+      value: '3',
+      label: '王五',
+      work: '医生'
+    }, {
+      value: '4',
+      label: '赵柳',
+      work: '护士'
+    }, {
+      value: '5',
+      label: '朱琪',
+      work: '护士长'
+    }]
     console.info(`当前用户id为：${this.$route.params.id}`)
   }
 }

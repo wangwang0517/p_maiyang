@@ -150,11 +150,18 @@ export default {
   methods: {
     getTableData (type) {
       this.tableDataType = type
-      console.info(`当前筛选条件：${this.tableDataType}`)
+      this.$notify({
+        message: `筛选条件：${this.tableDataType}`,
+        showClose: false
+      })
     },
     handleCurrentChange (currentPage) {
       console.info(`当前页面：${currentPage}`)
       console.info(`当前筛选条件：${this.tableDataType}`)
+      this.$notify({
+        message: `页面：${currentPage}，筛选条件：${this.tableDataType}`,
+        showClose: false
+      })
     }
   }
 }

@@ -3,7 +3,7 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/' }"><font-awesome-icon icon="home"/> 首页</el-breadcrumb-item>
       <el-breadcrumb-item><font-awesome-icon icon="user-injured" /> 病人管理</el-breadcrumb-item>
-      <el-breadcrumb-item><font-awesome-icon icon="plus-square" /> 病人信息列表</el-breadcrumb-item>
+      <el-breadcrumb-item><font-awesome-icon icon="clipboard-list" /> 病人信息列表</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="line"></div>
     <div class="information">
@@ -113,13 +113,16 @@ export default {
   },
   methods: {
     handleSearch () {
-      console.info(`当前筛选条件：${this.search}`)
-      console.info(`当前筛选条件：${this.patientType}`)
+      this.$notify({
+        message: `筛选条件：${this.patientType}、${this.search}`,
+        showClose: false
+      })
     },
     handleCurrentChange (currentPage) {
-      console.info(`当前页面：${currentPage}`)
-      console.info(`当前筛选条件：${this.search}`)
-      console.info(`当前筛选条件：${this.patientType}`)
+      this.$notify({
+        message: `页面：${currentPage}，筛选条件：${this.patientType} 、${this.search}`,
+        showClose: false
+      })
     },
     handleShowClick (id) {
       console.info(`当前记录id：${id}`)
