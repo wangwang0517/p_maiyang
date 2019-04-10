@@ -10,6 +10,11 @@
       <div class="data-filter">
         <el-button type="text" >筛选：</el-button>
         <el-input placeholder="请输入内容" v-model="search" class="input-with-select">
+          <el-select v-model="patientType" slot="prepend">
+            <el-option label="全部" value="1"></el-option>
+            <el-option label="绑定中" value="2"></el-option>
+            <el-option label="已解绑" value="3"></el-option>
+          </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
         </el-input>
       </div>
@@ -25,7 +30,7 @@
             <el-tag :type="getStatusFormatter(scope.row.status)" close-transition>{{getStatus(scope.row.status)}}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="100">
+        <el-table-column label="操作" width="150">
           <template slot-scope="scope">
             <el-button @click="handleShowClick(scope.row.id)" type="text" size="small">查看</el-button>
             <el-button @click="handleEditClick(scope.row.id)" type="text" size="small">编辑</el-button>
@@ -50,6 +55,7 @@
 export default {
   data () {
     return {
+      patientType: '1',
       search: '',
       tableDataType: 0,
       totalPage: 100,
@@ -97,7 +103,7 @@ export default {
     getStatusFormatter () {
       return function (status) {
         if (Number.parseInt(status) === 1) {
-          return 'info'
+          return 'Info.vue'
         } else {
           return 'success'
         }
@@ -107,16 +113,20 @@ export default {
   methods: {
     handleSearch () {
       console.info(`当前筛选条件：${this.search}`)
+      console.info(`当前筛选条件：${this.patientType}`)
     },
     handleCurrentChange (currentPage) {
       console.info(`当前页面：${currentPage}`)
       console.info(`当前筛选条件：${this.search}`)
+      console.info(`当前筛选条件：${this.patientType}`)
     },
     handleShowClick (id) {
       console.info(`当前记录id：${id}`)
+      this.$router.push({ path: `/patient/info/${id}` })
     },
     handleEditClick (id) {
       console.info(`当前记录id：${id}`)
+      this.$router.push({ path: `/patient/edit/${id}` })
     }
   }
 }

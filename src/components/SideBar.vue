@@ -31,10 +31,6 @@
         <font-awesome-icon icon="clipboard-list" />
         <span slot="title" class="menu-label">病人信息列表</span>
       </el-menu-item>
-      <el-menu-item index="/patient/history">
-        <font-awesome-icon icon="history" />
-        <span slot="title" class="menu-label">历史病人信息</span>
-      </el-menu-item>
     </el-submenu>
 
     <el-submenu index="device">
@@ -42,56 +38,56 @@
         <font-awesome-icon icon="stopwatch" />
         <span slot="title" class="menu-label">设备管理</span>
       </template>
-      <el-menu-item index="/newDevice">
+      <el-menu-item index="/device/new">
         <font-awesome-icon icon="plus-square" />
         <span slot="title" class="menu-label">新建设备信息</span>
       </el-menu-item>
-      <el-menu-item index="/deviceList">
+      <el-menu-item index="/device/list">
         <font-awesome-icon icon="clipboard-list" />
         <span slot="title" class="menu-label">设备信息列表</span>
       </el-menu-item>
     </el-submenu>
 
-    <el-submenu index="doctorNurse">
+    <el-submenu index="doctor_nurse">
       <template slot="title">
         <font-awesome-icon icon="user-md" />
         <span slot="title" class="menu-label">医护管理</span>
       </template>
-      <el-menu-item index="/newDoctorNurse">
+      <el-menu-item index="/doctor_nurse/new">
         <font-awesome-icon icon="plus-square" />
         <span slot="title" class="menu-label">新建医护信息</span>
       </el-menu-item>
-      <el-menu-item index="/doctorNurseList">
+      <el-menu-item index="/doctor_nurse/list">
         <font-awesome-icon icon="clipboard-list" />
         <span slot="title" class="menu-label">医护信息列表</span>
       </el-menu-item>
     </el-submenu>
 
-    <el-submenu index="procedures">
+    <el-submenu index="procedure">
       <template slot="title">
         <font-awesome-icon icon="procedures" />
         <span slot="title" class="menu-label">病区与值班管理</span>
       </template>
-      <el-menu-item index="/newProcedure">
+      <el-menu-item index="/procedure/new">
         <font-awesome-icon icon="plus-square" />
         <span slot="title" class="menu-label">新建值班信息</span>
       </el-menu-item>
-      <el-menu-item index="/proceduresList">
+      <el-menu-item index="/procedure/list">
         <font-awesome-icon icon="clipboard-list" />
         <span slot="title" class="menu-label">值班信息列表</span>
       </el-menu-item>
     </el-submenu>
 
-    <el-submenu index="system-admin">
+    <el-submenu index="system">
       <template slot="title">
         <font-awesome-icon icon="user-shield" />
         <span slot="title" class="menu-label">管理员</span>
       </template>
-      <el-menu-item index="/editSystemAdmin">
+      <el-menu-item index="/system/edit">
         <font-awesome-icon icon="edit" />
         <span slot="title" class="menu-label">修改信息</span>
       </el-menu-item>
-      <el-menu-item index="/about">
+      <el-menu-item index="/system/about">
         <font-awesome-icon icon="info-circle" />
         <span slot="title" class="menu-label">关于我们</span>
       </el-menu-item>

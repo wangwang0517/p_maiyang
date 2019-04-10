@@ -127,7 +127,7 @@ export default {
           case 1 :
             return 'success'
           case 2 :
-            return 'info'
+            return 'Info.vue'
           case 3 :
             return 'warning'
           case 4 :
