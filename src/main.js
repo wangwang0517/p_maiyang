@@ -21,6 +21,7 @@ Vue.use(ElementUI)
 Vue.config.productionTip = true
 
 router.beforeEach((to, from, next) => {
+  document.title = to.name
   if (to.path === '/login') {
     next()
   } else if (!store.state.isLogin) {

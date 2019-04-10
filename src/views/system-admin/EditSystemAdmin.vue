@@ -6,7 +6,7 @@
       <el-breadcrumb-item><font-awesome-icon icon="edit" /> 编辑信息</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="line"></div>
-    <el-form :model="systemAdminForm" status-icon :rules="systemAdminFormRules" ref="systemAdminFormRules"
+    <el-form :model="systemAdminForm" status-icon :rules="systemAdminFormRules" ref="systemAdminForm"
              label-width="100px" class="demo-ruleForm">
       <el-form-item label="姓名" prop="username">
         <el-input v-model.number="systemAdminForm.username"></el-input>
@@ -101,7 +101,6 @@ export default {
     }
   },
   created () {
-    document.title = this.$route.name
     let userInfo = JSON.parse(this.$store.state.userInfo)
     this.systemAdminForm.id = userInfo['id']
     this.systemAdminForm.username = userInfo['username']

@@ -68,6 +68,29 @@ html,body{
   transform: scaleY(0.5);
 }
 
+.data-filter{
+  margin: 15px auto;
+  .input-with-select{
+    width: 300px;
+  }
+  .el-input__inner{
+    height: 35px;
+    line-height: 35px;
+    &:hover,&:active,&:focus{
+      border-color: #DCDFE6 !important;
+    }
+  }
+}
+
+
+.pagination{
+  margin: 15px auto;
+}
+.table-header th{
+  background-color: #F2F6FC !important;
+  color: #333;
+}
+
 .myml-header{
   padding: 0;
   margin-bottom: 10px;

@@ -18,6 +18,21 @@ export default new Router({
       meta: { hiddenCommonComponents: true }
     },
     {
+      path: '/alarm',
+      name: '报警信息-脉氧脉率管理后台',
+      component: () => import(/* webpackChunkName: "about" */ './views/alarm/alarm.vue')
+    },
+    {
+      path: '/patient/new',
+      name: '新建病人信息-脉氧脉率管理后台',
+      component: () => import(/* webpackChunkName: "about" */ './views/patient/new.vue')
+    },
+    {
+      path: '/patient/list',
+      name: '病人信息列表-脉氧脉率管理后台',
+      component: () => import(/* webpackChunkName: "about" */ './views/patient/list.vue')
+    },
+    {
       path: '/home',
       name: 'home',
       component: () => import(/* webpackChunkName: "about" */ './views/Home.vue')

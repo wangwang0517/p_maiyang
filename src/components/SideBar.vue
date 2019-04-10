@@ -7,18 +7,14 @@
     background-color="#545c64"
     text-color="#909399"
     router>
-    <el-submenu index="heartbeat">
+    <el-submenu index="alarm">
       <template slot="title">
         <font-awesome-icon icon="heartbeat" />
         <span slot="title" class="menu-label">报警管理</span>
       </template>
-      <el-menu-item index="/heartbeat">
+      <el-menu-item index="/alarm">
         <font-awesome-icon icon="clipboard-list" />
         <span slot="title" class="menu-label">报警信息</span>
-      </el-menu-item>
-      <el-menu-item index="/heartbeatHistory">
-        <font-awesome-icon icon="history" />
-        <span slot="title" class="menu-label">报警查询</span>
       </el-menu-item>
     </el-submenu>
 
@@ -27,15 +23,15 @@
         <font-awesome-icon icon="user-injured" />
         <span slot="title" class="menu-label">病人管理</span>
       </template>
-      <el-menu-item index="/newPatient">
+      <el-menu-item index="/patient/new">
         <font-awesome-icon icon="plus-square" />
         <span slot="title" class="menu-label">新建病人信息</span>
       </el-menu-item>
-      <el-menu-item index="/patientList">
+      <el-menu-item index="/patient/list">
         <font-awesome-icon icon="clipboard-list" />
         <span slot="title" class="menu-label">病人信息列表</span>
       </el-menu-item>
-      <el-menu-item index="/patientHistory">
+      <el-menu-item index="/patient/history">
         <font-awesome-icon icon="history" />
         <span slot="title" class="menu-label">历史病人信息</span>
       </el-menu-item>
