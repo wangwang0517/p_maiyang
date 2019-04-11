@@ -2,9 +2,9 @@
   <div class="myml-main edit-system-admin">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/' }"><font-awesome-icon icon="home" /> 首页</el-breadcrumb-item>
-      <el-breadcrumb-item><font-awesome-icon icon="stopwatch" /> 设备管理</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ path: '/device/list' }"><font-awesome-icon icon="clipboard-list" /> 设备列表</el-breadcrumb-item>
-      <el-breadcrumb-item><font-awesome-icon icon="plus-square" /> 编辑设备信息</el-breadcrumb-item>
+      <el-breadcrumb-item>设备管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/device/list' }">设备列表</el-breadcrumb-item>
+      <el-breadcrumb-item>编辑设备信息</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="line"></div>
     <el-form :model="deviceForm" status-icon :rules="deviceFormRules" ref="deviceForm" label-width="100px">

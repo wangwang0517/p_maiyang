@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import login from './views/Login.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -18,7 +17,7 @@ export default new Router({
     {
       path: '/login',
       name: 'login',
-      component: login,
+      component: () => import(/* webpackChunkName: "mai_yang" */ './views/Login.vue'),
       meta: { hiddenCommonComponents: true }
     },
     {
@@ -72,7 +71,7 @@ export default new Router({
       component: () => import(/* webpackChunkName: "mai_yang" */ './views/doctor_nurse/List.vue')
     },
     {
-      path: '/doctor_nurse/info',
+      path: '/doctor_nurse/info/:id',
       name: '医护信息详情-脉氧脉率管理后台',
       component: () => import(/* webpackChunkName: "mai_yang" */ './views/doctor_nurse/Info.vue')
     },
@@ -82,7 +81,7 @@ export default new Router({
       component: () => import(/* webpackChunkName: "mai_yang" */ './views/doctor_nurse/New.vue')
     },
     {
-      path: '/doctor_nurse/edit',
+      path: '/doctor_nurse/edit/:id',
       name: '编辑医护信息-脉氧脉率管理后台',
       component: () => import(/* webpackChunkName: "mai_yang" */ './views/doctor_nurse/Edit.vue')
     },

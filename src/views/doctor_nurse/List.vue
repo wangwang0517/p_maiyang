@@ -2,39 +2,36 @@
   <div class="myml-main about">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/' }"><font-awesome-icon icon="home"/> 首页</el-breadcrumb-item>
-      <el-breadcrumb-item><font-awesome-icon icon="user-injured" /> 病人管理</el-breadcrumb-item>
-      <el-breadcrumb-item><font-awesome-icon icon="plus-square" /> 病人信息列表</el-breadcrumb-item>
+      <el-breadcrumb-item>医护管理</el-breadcrumb-item>
+      <el-breadcrumb-item>医护信息列表</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="line"></div>
     <div class="information">
       <div class="data-filter">
         <el-button type="text" >筛选：</el-button>
         <el-input placeholder="请输入内容" v-model="search" class="input-with-select">
-          <el-select v-model="patientType" slot="prepend">
-            <el-option label="全部" value="1"></el-option>
-            <el-option label="绑定中" value="2"></el-option>
-            <el-option label="已解绑" value="3"></el-option>
+          <el-select v-model="procedureType" slot="prepend">
+            <el-option label="全部" value=""></el-option>
+            <el-option
+              v-for="item in procedureList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
         </el-input>
       </div>
       <el-table :data="tableData" style="width: 100%" header-row-class-name="table-header" align="center">
         <el-table-column prop="username" label="姓名"></el-table-column>
-        <el-table-column prop="hospitalizationNumber" label="住院号"></el-table-column>
+        <el-table-column prop="employeeNumber" label="工号"></el-table-column>
+        <el-table-column prop="phone" label="手机号码"></el-table-column>
         <el-table-column prop="procedure" label="病区"></el-table-column>
-        <el-table-column prop="bedNumber" label="床号"></el-table-column>
-        <el-table-column prop="startTime" label="绑定时间" width="170px"></el-table-column>
-        <el-table-column prop="endTime" label="解绑时间" width="170px"></el-table-column>
-        <el-table-column prop="status" label="状态">
-          <template slot-scope="scope">
-            <el-tag :type="getStatusFormatter(scope.row.status)" close-transition>{{getStatus(scope.row.status)}}</el-tag>
-          </template>
-        </el-table-column>
+        <el-table-column prop="job" label="职称" ></el-table-column>
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
-            <el-button @click="handleShowClick(scope.row.id)" type="text" size="small">查看</el-button>
             <el-button @click="handleEditClick(scope.row.id)" type="text" size="small">编辑</el-button>
-            <el-button @click="handleDeviceClick(scope.row.id)" type="text" size="small">设备</el-button>
+            <el-button @click="handleDeleteClick(scope.row.id)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -56,7 +53,8 @@
 export default {
   data () {
     return {
-      patientType: '1',
+      procedureType: '',
+      procedureList: [],
       search: '',
       tableDataType: 0,
       totalPage: 100,
@@ -64,30 +62,24 @@ export default {
       tableData: [{
         id: 3,
         username: '张三',
-        hospitalizationNumber: '10003',
-        bedNumber: 'B4F5001',
+        employeeNumber: '10003',
+        phone: 'B4F5001',
         procedure: '肠胃科',
-        startTime: '2018-04-06 12:34:45',
-        endTime: '2018-04-10 12:34:45',
-        status: '1'
+        job: '医生'
       }, {
         id: 2,
         username: '李四',
-        hospitalizationNumber: '10004',
-        bedNumber: 'B4F5002',
+        employeeNumber: '10004',
+        phone: 'B4F5002',
         procedure: '肠胃科',
-        startTime: '2018-04-06 12:34:45',
-        endTime: '2018-04-10 12:34:45',
-        status: '0'
+        job: '护士'
       }, {
         id: 1,
         username: '王五',
-        hospitalizationNumber: '10001',
-        bedNumber: 'B4F5004',
+        employeeNumber: '10001',
+        phone: 'B4F5004',
         procedure: '肠胃科',
-        startTime: '2018-04-06 12:34:45',
-        endTime: '2018-04-10 12:34:45',
-        status: '0'
+        job: '院长'
       }]
     }
   },
@@ -121,18 +113,31 @@ export default {
       console.info(`当前筛选条件：${this.search}`)
       console.info(`当前筛选条件：${this.patientType}`)
     },
-    handleShowClick (id) {
+    handleDeleteClick (id) {
       console.info(`当前记录id：${id}`)
-      this.$router.push({ path: `/patient/info/${id}` })
     },
     handleEditClick (id) {
       console.info(`当前记录id：${id}`)
-      this.$router.push({ path: `/patient/edit/${id}` })
-    },
-    handleDeviceClick (id) {
-      console.info(`当前记录id：${id}`)
-      this.$router.push({ path: `/device/info/${id}` })
+      this.$router.push({ path: `/doctor_nurse/edit/${id}` })
     }
+  },
+  created () {
+    this.procedureList = [{
+      value: '1',
+      label: '病区一'
+    }, {
+      value: '2',
+      label: '病区二'
+    }, {
+      value: '3',
+      label: '病区三'
+    }, {
+      value: '4',
+      label: '病区四'
+    }, {
+      value: '5',
+      label: '病区五'
+    }]
   }
 }
 </script>

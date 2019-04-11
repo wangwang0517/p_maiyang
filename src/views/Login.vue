@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <img alt="Vue logo" class="logo" src="./../assets/logo.png">
+    <img alt="Vue logo" class="logo" src="../assets/logo.png">
     <el-form :model="loginForm" :rules="loginRules" ref="loginForm" class="login-form" >
       <el-form-item prop="username">
         <el-input v-model="loginForm.username" placeholder="用户名"></el-input>
