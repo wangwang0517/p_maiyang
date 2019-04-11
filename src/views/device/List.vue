@@ -35,6 +35,7 @@
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
             <el-button @click="handleEditClick(scope.row.id)" type="text" size="small">编辑</el-button>
+            <el-button @click="handleEditClick(scope.row.id)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

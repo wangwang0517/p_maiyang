@@ -91,7 +91,7 @@ export default new Router({
       component: () => import(/* webpackChunkName: "mai_yang" */ './views/procedure/List.vue')
     },
     {
-      path: '/procedure/info',
+      path: '/procedure/info/:id',
       name: '病区与值班信息详情-脉氧脉率管理后台',
       component: () => import(/* webpackChunkName: "mai_yang" */ './views/procedure/Info.vue')
     },
@@ -101,7 +101,7 @@ export default new Router({
       component: () => import(/* webpackChunkName: "mai_yang" */ './views/procedure/New.vue')
     },
     {
-      path: '/procedure/edit',
+      path: '/procedure/edit/:id',
       name: '编辑病区与值班信息-脉氧脉率管理后台',
       component: () => import(/* webpackChunkName: "mai_yang" */ './views/procedure/Edit.vue')
     },
