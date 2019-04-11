@@ -9,7 +9,7 @@
     <el-menu-item v-on:click="changeCollapse">
       <font-awesome-icon icon="layer-group" />
     </el-menu-item>
-    <el-menu-item  class="logout" index="logout" >
+    <el-menu-item  class="logout" index="/logout" >
       <font-awesome-icon icon="power-off" />
       退出
     </el-menu-item>

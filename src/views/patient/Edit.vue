@@ -3,6 +3,7 @@
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/' }"><font-awesome-icon icon="home" /> 首页</el-breadcrumb-item>
       <el-breadcrumb-item><font-awesome-icon icon="user-injured" /> 病人管理</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/patient/list' }"><font-awesome-icon icon="clipboard-list" /> 病人信息列表</el-breadcrumb-item>
       <el-breadcrumb-item><font-awesome-icon icon="edit" /> 编辑病人信息</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="line"></div>
@@ -70,12 +71,13 @@ export default {
       procedureList: [],
       doctorNurseList: [],
       patientForm: {
-        username: '',
-        hospitalizationNumber: '',
-        bedNumber: '',
-        device: '',
-        procedure: '',
-        doctor_nurse: []
+        id: 3,
+        username: '张三',
+        hospitalizationNumber: '10003',
+        bedNumber: 'B4F5001',
+        procedure: '肠胃科',
+        device: '1',
+        doctor_nurse: ['1', '2', '3']
       },
       patientFormRules: {
         username: [

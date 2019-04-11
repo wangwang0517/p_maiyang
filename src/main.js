@@ -25,14 +25,14 @@ router.beforeEach((to, from, next) => {
   if (to.path === '/login') {
     next()
   } else if (!store.state.isLogin) {
-    next({ path: 'login' })
+    next({ path: '/login' })
   } else if (to.path === '/logout') {
     vm.$confirm('确认退出登录?', '提示', {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: 'warning'
     }).then(() => {
-      next({ path: 'login' })
+      next({ path: '/login' })
       store.commit('clearUserInfo')
     }).catch(() => {
 

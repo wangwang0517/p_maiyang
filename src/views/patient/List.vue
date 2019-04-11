@@ -23,6 +23,11 @@
         <el-table-column prop="hospitalizationNumber" label="住院号"></el-table-column>
         <el-table-column prop="procedure" label="病区"></el-table-column>
         <el-table-column prop="bedNumber" label="床号"></el-table-column>
+        <el-table-column prop="devise" label="设备">
+          <template slot-scope="scope">
+            <el-button @click="handleDeviceClick(scope.row.id)" type="text" size="small">{{scope.row.devise}}</el-button>
+          </template>
+        </el-table-column>
         <el-table-column prop="startTime" label="绑定时间" width="170px"></el-table-column>
         <el-table-column prop="endTime" label="解绑时间" width="170px"></el-table-column>
         <el-table-column prop="status" label="状态">
@@ -34,7 +39,6 @@
           <template slot-scope="scope">
             <el-button @click="handleShowClick(scope.row.id)" type="text" size="small">查看</el-button>
             <el-button @click="handleEditClick(scope.row.id)" type="text" size="small">编辑</el-button>
-            <el-button @click="handleDeviceClick(scope.row.id)" type="text" size="small">设备</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -69,7 +73,8 @@ export default {
         procedure: '肠胃科',
         startTime: '2018-04-06 12:34:45',
         endTime: '2018-04-10 12:34:45',
-        status: '1'
+        status: '1',
+        devise: '设备3'
       }, {
         id: 2,
         username: '李四',
@@ -78,7 +83,8 @@ export default {
         procedure: '肠胃科',
         startTime: '2018-04-06 12:34:45',
         endTime: '2018-04-10 12:34:45',
-        status: '0'
+        status: '0',
+        devise: '设备2'
       }, {
         id: 1,
         username: '王五',
@@ -87,7 +93,8 @@ export default {
         procedure: '肠胃科',
         startTime: '2018-04-06 12:34:45',
         endTime: '2018-04-10 12:34:45',
-        status: '0'
+        status: '0',
+        devise: '设备1'
       }]
     }
   },

@@ -2,43 +2,28 @@
   <div class="myml-main edit-system-admin">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/' }"><font-awesome-icon icon="home" /> 首页</el-breadcrumb-item>
-      <el-breadcrumb-item><font-awesome-icon icon="user-injured" /> 病人管理</el-breadcrumb-item>
-      <el-breadcrumb-item><font-awesome-icon icon="plus-square" /> 新建病人信息</el-breadcrumb-item>
+      <el-breadcrumb-item><font-awesome-icon icon="stopwatch" /> 设备管理</el-breadcrumb-item>
+      <el-breadcrumb-item><font-awesome-icon icon="plus-square" /> 新建设备信息</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="line"></div>
-    <el-form :model="patientForm" status-icon :rules="patientFormRules" ref="patientForm" label-width="100px">
-      <el-form-item label="姓名" prop="username">
-        <el-input v-model="patientForm.username"></el-input>
+    <el-form :model="deviceForm" status-icon :rules="deviceFormRules" ref="deviceForm" label-width="100px">
+      <el-form-item label="设备名称" prop="name">
+        <el-input v-model="deviceForm.name"></el-input>
       </el-form-item>
-      <el-form-item label="住院号" prop="hospitalizationNumber">
-        <el-input v-model="patientForm.hospitalizationNumber" autocomplete="off"></el-input>
+      <el-form-item label="设备型号" prop="type">
+        <el-input v-model="deviceForm.type"></el-input>
       </el-form-item>
-      <el-form-item label="床号" prop="bedNumber">
-        <el-input v-model="patientForm.bedNumber"></el-input>
+      <el-form-item label="设备序列号" prop="series">
+        <el-input v-model="deviceForm.series"></el-input>
       </el-form-item>
-      <el-form-item label="病区" prop="procedure">
-        <el-select v-model="patientForm.procedure" placeholder="请选择病区" style="width: 100%">
-          <el-option
-            v-for="item in procedureList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
+      <el-form-item label="状态" prop="status">
+        <el-radio-group v-model="deviceForm.status" size="medium">
+          <el-radio border label="1">故障</el-radio>
+          <el-radio border label="0">正常</el-radio>
+        </el-radio-group>
       </el-form-item>
-      <el-form-item label="设备" prop="device">
-        <el-select v-model="patientForm.device" placeholder="请选择设备" style="width: 100%">
-          <el-option
-            v-for="item in deviceList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-
       <el-form-item>
-        <el-button type="primary" @click="submitForm('patientForm')">提交</el-button>
+        <el-button type="primary" @click="submitForm('deviceForm')">提交</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -47,26 +32,23 @@
 <script>
 export default {
   data () {
-    let validateUserName = (rule, value, callback) => {
+    let validateName = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入用户名'))
+        callback(new Error('请输入设备名称'))
       } else {
         callback()
       }
     }
     return {
-      deviceList: [],
-      procedureList: [],
-      patientForm: {
-        username: '',
-        hospitalizationNumber: '',
-        bedNumber: '',
-        device: '',
-        procedure: ''
+      deviceForm: {
+        name: '',
+        type: '',
+        series: '',
+        status: '1'
       },
-      patientFormRules: {
-        username: [
-          { validator: validateUserName, trigger: 'blur' }
+      deviceFormRules: {
+        name: [
+          { validator: validateName, trigger: 'blur' }
         ]
       }
     }
@@ -75,48 +57,16 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          this.$notify({
+            message: `提交信息`,
+            showClose: false
+          })
         } else {
           console.log('error submit!!')
           return false
         }
       })
     }
-  },
-  created () {
-    this.procedureList = [{
-      value: '1',
-      label: '病区一'
-    }, {
-      value: '2',
-      label: '病区二'
-    }, {
-      value: '3',
-      label: '病区三'
-    }, {
-      value: '4',
-      label: '病区四'
-    }, {
-      value: '5',
-      label: '病区五'
-    }]
-
-    this.deviceList = [{
-      value: '1',
-      label: '设备一'
-    }, {
-      value: '2',
-      label: '设备二'
-    }, {
-      value: '3',
-      label: '设备三'
-    }, {
-      value: '4',
-      label: '设备四'
-    }, {
-      value: '5',
-      label: '设备五'
-    }]
   }
 }
 </script>
