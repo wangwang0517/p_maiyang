@@ -1,11 +1,11 @@
 <template>
-  <div id="app">
+  <div id="app" >
     <el-container>
-      <el-header class="myml-header" v-if="!this.$route.meta.hiddenCommonComponents">
+      <el-header class="myml-header" v-if="!this.$route.meta.hiddenCommonComponents" v-cloak>
         <Header v-on:changeCollapseStatus="changeCollapseStatus"></Header>
       </el-header>
       <el-container class="myml-container">
-        <el-aside width="auto" class="myml-side-bar"  v-if="!this.$route.meta.hiddenCommonComponents">
+        <el-aside width="auto" class="myml-side-bar"  v-if="!this.$route.meta.hiddenCommonComponents" v-cloak>
           <side-bar :isCollapse="isCollapse"></side-bar>
         </el-aside>
         <el-main style="padding: 0">
