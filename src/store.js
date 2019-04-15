@@ -11,6 +11,16 @@ export default new Vuex.Store({
     permission: window.localStorage.getItem('permission') || null
   },
   getters: {
+    user (state) {
+      let user = {}
+      if (state.userInfo) {
+        user = JSON.parse(JSON.stringify(state.userInfo))
+      }
+      return user
+    },
+    token (state) {
+      return state.token
+    }
   },
   mutations: {
     setLoginResult (state, data) {
@@ -31,6 +41,7 @@ export default new Vuex.Store({
       window.localStorage.removeItem('token')
       window.localStorage.removeItem('permission')
       window.localStorage.removeItem('userInfo')
+      window.location.reload()
     }
   },
   actions: {}

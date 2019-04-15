@@ -1,6 +1,6 @@
 <template>
   <div id="app" >
-    <el-container>
+    <el-container class="is-vertical">
       <el-header class="myml-header" v-if="!this.$route.meta.hiddenCommonComponents" v-cloak>
         <Header v-on:changeCollapseStatus="changeCollapseStatus"></Header>
       </el-header>

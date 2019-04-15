@@ -4,22 +4,24 @@ import { MessageBox } from 'element-ui'
 
 const service = axios.create({
   baseURL: 'http://106.13.91.109:1234', // api 的 base_url
-  withCredentials: true, // 跨域请求时发送 cookies
+  withCredentials: false, // 跨域请求时发送 cookies
   timeout: 5000 // request timeout
 })
 
 // request interceptor
 service.interceptors.request.use(
   config => {
-    // Do something before request is sent
+    config.headers['Access-Control-Allow-Origin'] = '*'
+    config.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS, PUT, PATCH, DELETE'
+    config.headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept'
+    config.headers['Content-Type'] = 'application/json'
+    console.info(store.state.token)
     if (store.getters.token) {
-      config.headers['Authorization'] = store.state.token
+      config.headers['Authorization'] = store.getters.token
     }
     return config
   },
   error => {
-    // Do something with request error
-    console.log(error) // for debug
     return Promise.reject(error)
   }
 )
@@ -27,6 +29,7 @@ service.interceptors.request.use(
 // response interceptor
 service.interceptors.response.use(
   response => {
+    console.info(response)
     const res = response.data
     if (res.code !== 200) {
       //  401 未登录

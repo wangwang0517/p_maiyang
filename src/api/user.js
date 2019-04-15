@@ -1,16 +1,9 @@
 import http from '../utils/htttp'
 
 export function login (data) {
-  return http({
-    url: '/mo/login/common',
-    method: 'POST',
-    data
-  })
+  return http.post('/mo/login/common', data)
 }
 
 export function getInfo () {
-  return http({
-    url: '/mo/admin',
-    method: 'GET'
-  })
+  return http.get('/mo/admin')
 }
