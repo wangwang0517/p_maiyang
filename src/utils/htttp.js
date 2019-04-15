@@ -13,7 +13,7 @@ service.interceptors.request.use(
   config => {
     // Do something before request is sent
     if (store.getters.token) {
-      config.headers['Authorization'] = store.getters.token
+      config.headers['Authorization'] = store.state.token
     }
     return config
   },

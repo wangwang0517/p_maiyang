@@ -11,12 +11,11 @@ export default new Vuex.Store({
     permission: window.localStorage.getItem('permission') || null
   },
   getters: {
-    token: state => state.token
   },
   mutations: {
     setLoginResult (state, data) {
       state.token = data.token
-      state.permission = data.permission
+      state.permission = data.permission.toUpperCase()
       window.localStorage.setItem('token', JSON.stringify(data.token))
       window.localStorage.setItem('permission', JSON.stringify(data.permission))
     },

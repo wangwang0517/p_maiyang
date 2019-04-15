@@ -60,10 +60,11 @@ export default {
           return false
         }
         await login({ username: this.loginForm.username, password: Base64.encode(this.loginForm.password) }).then(data => {
-          this.$store.commit('setLoginResult', data)
+          console.info(data)
+          this.$store.commit('setLoginResult', data.data)
           getInfo().then(data => {
             console.info(data)
-            this.$store.commit('setUserInfo', data)
+            this.$store.commit('setUserInfo', data.data)
             this.$router.push('/alarm')
           })
         })
