@@ -17,22 +17,19 @@ export default new Vuex.Store({
         user = JSON.parse(JSON.stringify(state.userInfo))
       }
       return user
-    },
-    token (state) {
-      return state.token
     }
   },
   mutations: {
     setLoginResult (state, data) {
       state.token = data.token
-      state.permission = data.permission.toUpperCase()
-      window.localStorage.setItem('token', JSON.stringify(data.token))
-      window.localStorage.setItem('permission', JSON.stringify(data.permission))
-    },
-    setUserInfo (state, data) {
+      state.permission = data.permission
+      delete data.token
+      delete data.permission
       state.userInfo = data
       state.isLogin = true
-      window.localStorage.setItem('userInfo', JSON.stringify(data))
+      window.localStorage.setItem('userInfo', JSON.stringify(state.userInfo))
+      window.localStorage.setItem('token', state.token)
+      window.localStorage.setItem('permission', state.permission)
     },
     clearUserInfo (state) {
       state.userInfo = null

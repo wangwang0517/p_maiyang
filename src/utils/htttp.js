@@ -15,9 +15,8 @@ service.interceptors.request.use(
     config.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS, PUT, PATCH, DELETE'
     config.headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept'
     config.headers['Content-Type'] = 'application/json'
-    console.info(store.state.token)
-    if (store.getters.token) {
-      config.headers['Authorization'] = store.getters.token
+    if (store.state.token) {
+      config.headers['Authorization'] = store.state.token
     }
     return config
   },
@@ -29,7 +28,6 @@ service.interceptors.request.use(
 // response interceptor
 service.interceptors.response.use(
   response => {
-    console.info(response)
     const res = response.data
     if (res.code !== 200) {
       //  401 未登录
@@ -53,7 +51,10 @@ service.interceptors.response.use(
     }
   },
   error => {
-    MessageBox.alert(error.message, '提示', {
+    console.log(error.response.data)
+    console.log(error.response.status)
+    console.log(error.response.headers)
+    MessageBox.alert(error.response.data.msg, '提示', {
       confirmButtonText: '确定'
     })
     return Promise.reject(error)

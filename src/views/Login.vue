@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { login, getInfo } from '../api/user'
+import { login } from '../api/user'
 import { Base64 } from 'js-base64'
 
 export default {
@@ -40,7 +40,7 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
+        username: 'user',
         password: '123456'
       },
       loginRules: {
@@ -60,13 +60,8 @@ export default {
           return false
         }
         await login({ username: this.loginForm.username, password: Base64.encode(this.loginForm.password) }).then(data => {
-          console.info(data)
           this.$store.commit('setLoginResult', data.data)
-          getInfo().then(data => {
-            console.info(data)
-            this.$store.commit('setUserInfo', data.data)
-            this.$router.push('/alarm')
-          })
+          this.$router.push('/alarm')
         })
       })
     }

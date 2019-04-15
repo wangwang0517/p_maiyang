@@ -63,8 +63,36 @@ html,body{
   display: block;
   clear: both;
 }
-
-
+.state-info{
+   background-color: #15C20C;
+   border-color: #15C20C;
+   color: #fff;
+ }
+.state-danger{
+  background-color: #E60000;
+  border-color: #E60000;
+  color: #fff;
+}
+.urgent-level-1{
+  background-color: #FFB5B5;
+  border-color: #FFB5B5;
+  color: #fff;
+}
+.urgent-level-2{
+  background-color: #FF7D7D;
+  border-color: #FF7D7D;
+  color: #fff;
+}
+.urgent-level-3{
+  background-color: #FF5151;
+  border-color: #FF5151;
+  color: #fff;
+}
+.urgent-level-4{
+  background-color: #FF0000;
+  border-color: #FF0000;
+  color: #fff;
+}
 .line{
   height: 1px;
   background-color: #e0e6ed;

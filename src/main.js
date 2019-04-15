@@ -22,7 +22,6 @@ Vue.config.productionTip = true
 
 router.beforeEach((to, from, next) => {
   document.title = to.name
-  console.info(store.state)
   if (to.path === '/login') {
     next()
   } else if (!store.state.isLogin) {
