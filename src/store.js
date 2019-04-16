@@ -5,18 +5,14 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    userInfo: window.localStorage.getItem('userInfo') || null,
+    userInfo: JSON.parse(window.localStorage.getItem('userInfo') || '{}'),
     isLogin: !!window.localStorage.getItem('userInfo'),
     token: window.localStorage.getItem('token') || null,
     permission: window.localStorage.getItem('permission') || null
   },
   getters: {
     user (state) {
-      let user = {}
-      if (state.userInfo) {
-        user = JSON.parse(JSON.stringify(state.userInfo))
-      }
-      return user
+      return state.userInfo
     }
   },
   mutations: {
@@ -31,6 +27,10 @@ export default new Vuex.Store({
       window.localStorage.setItem('token', state.token)
       window.localStorage.setItem('permission', state.permission)
     },
+    updateInfo (state, data) {
+      state.userInfo = data
+      window.localStorage.setItem('userInfo', JSON.stringify(state.userInfo))
+    },
     clearUserInfo (state) {
       state.userInfo = null
       state.token = null
@@ -41,5 +41,9 @@ export default new Vuex.Store({
       window.location.reload()
     }
   },
-  actions: {}
+  actions: {
+    saveLoginResult (context, data) {
+      context.commit('setLoginResult', data)
+    }
+  }
 })

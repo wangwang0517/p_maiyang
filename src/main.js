@@ -18,6 +18,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.use(ElementUI)
 
+Vue.config.devtools = true
 Vue.config.productionTip = true
 
 router.beforeEach((to, from, next) => {

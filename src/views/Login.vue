@@ -40,7 +40,7 @@ export default {
     }
     return {
       loginForm: {
-        username: 'user',
+        username: 'admin',
         password: '123456'
       },
       loginRules: {
@@ -60,8 +60,13 @@ export default {
           return false
         }
         await login({ username: this.loginForm.username, password: Base64.encode(this.loginForm.password) }).then(data => {
-          this.$store.commit('setLoginResult', data.data)
-          this.$router.push('/alarm')
+          this.$store.dispatch('saveLoginResult', data.data).then(() => {
+            if (this.$store.state.permission === 'ADMIN') {
+              this.$router.push('/system/edit')
+            } else {
+              this.$router.push('/alarm')
+            }
+          })
         })
       })
     }

@@ -5,16 +5,18 @@ import { MessageBox } from 'element-ui'
 const service = axios.create({
   baseURL: 'http://106.13.91.109:1234', // api 的 base_url
   withCredentials: false, // 跨域请求时发送 cookies
-  timeout: 5000 // request timeout
+  timeout: 5000,
+  headers: {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+    'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept'
+  }
 })
 
 // request interceptor
 service.interceptors.request.use(
   config => {
-    config.headers['Access-Control-Allow-Origin'] = '*'
-    config.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS, PUT, PATCH, DELETE'
-    config.headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept'
-    config.headers['Content-Type'] = 'application/json'
     if (store.state.token) {
       config.headers['Authorization'] = store.state.token
     }
@@ -51,9 +53,11 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log(error.response.data)
-    console.log(error.response.status)
-    console.log(error.response.headers)
+    if (error.response) {
+      console.log(error.response.data)
+      console.log(error.response.status)
+      console.log(error.response.headers)
+    }
     MessageBox.alert(error.response.data.msg, '提示', {
       confirmButtonText: '确定'
     })

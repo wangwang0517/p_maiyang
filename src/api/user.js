@@ -7,3 +7,10 @@ export function login (data) {
 export function getInfo () {
   return http.get('/mo/admin')
 }
+
+export function updateInfo (data) {
+  let config = {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }
+  return http.put('/mo/admin', data, config)
+}

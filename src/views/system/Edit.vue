@@ -8,8 +8,11 @@
     <div class="line"></div>
     <el-form :model="systemAdminForm" status-icon :rules="systemAdminFormRules" ref="systemAdminForm"
              label-width="100px" class="demo-ruleForm">
-      <el-form-item label="姓名" prop="username">
+      <el-form-item label="账号" prop="username">
         <el-input v-model.number="systemAdminForm.username"></el-input>
+      </el-form-item>
+      <el-form-item label="姓名" prop="name">
+        <el-input v-model.number="systemAdminForm.name"></el-input>
       </el-form-item>
       <el-form-item label="手机号码" prop="phone">
         <el-input v-model.number="systemAdminForm.phone"></el-input>
@@ -29,11 +32,21 @@
 
 </template>
 <script>
+import { updateInfo, getInfo } from '../../api/user'
+import { Base64 } from 'js-base64'
+
 export default {
   data () {
-    let validateUserName = (rule, value, callback) => {
+    let validateName = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请输入用户名'))
+      } else {
+        callback()
+      }
+    }
+    let validateUserName = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入账号'))
       } else {
         callback()
       }
@@ -45,20 +58,8 @@ export default {
         callback()
       }
     }
-    let validatePassword = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'))
-      } else {
-        if (this.systemAdminForm.checkPassword !== '') {
-          this.$refs.systemAdminFormRules.validateField('checkPassword')
-        }
-        callback()
-      }
-    }
     let validateCheckPassword = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请再次输入密码'))
-      } else if (value !== this.systemAdminForm.password) {
+      if (value !== this.systemAdminForm.password) {
         callback(new Error('两次输入密码不一致!'))
       } else {
         callback()
@@ -66,21 +67,21 @@ export default {
     }
     return {
       systemAdminForm: {
-        id: '',
-        username: '',
-        phone: '',
-        password: '',
-        checkPassword: ''
+        username: this.$store.getters.user.username,
+        name: this.$store.getters.user.name,
+        phone: this.$store.getters.user.phone.toString(),
+        password: null,
+        checkPassword: null
       },
       systemAdminFormRules: {
-        password: [
-          { validator: validatePassword, trigger: 'blur' }
-        ],
         checkPassword: [
           { validator: validateCheckPassword, trigger: 'blur' }
         ],
         username: [
           { validator: validateUserName, trigger: 'blur' }
+        ],
+        name: [
+          { validator: validateName, trigger: 'blur' }
         ],
         phone: [
           { validator: validatePhone, trigger: 'blur' }
@@ -92,19 +93,31 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          let params = this.systemAdminForm
+          delete params.checkPassword
+          if (params.password) {
+            params.password = Base64.encode(params.password)
+          }
+          let formData = new FormData()
+          for (let key in params) {
+            formData.append(key, params[key])
+          }
+          updateInfo(formData).then(() => {
+            this.$message({
+              message: '更新成功',
+              type: 'success'
+            })
+            this.$refs[formName].resetFields()
+            getInfo().then(data => {
+              this.$store.commit('updateInfo', data.data)
+            })
+          })
         } else {
           console.log('error submit!!')
           return false
         }
       })
     }
-  },
-  created () {
-    let userInfo = JSON.parse(this.$store.state.userInfo)
-    this.systemAdminForm.id = userInfo['id']
-    this.systemAdminForm.username = userInfo['username']
-    this.systemAdminForm.phone = userInfo['phone']
   }
 }
 </script>

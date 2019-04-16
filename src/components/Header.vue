@@ -10,6 +10,7 @@
       <font-awesome-icon icon="layer-group" />
     </el-menu-item>
     <el-menu-item  class="logout" index="/logout" >
+      <span>{{ this.$store.getters.user.name }} </span>
       <font-awesome-icon icon="power-off" />
       退出
     </el-menu-item>
