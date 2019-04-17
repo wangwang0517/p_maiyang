@@ -14,3 +14,7 @@ export function updateInfo (data) {
   }
   return http.put('/mo/admin', data, config)
 }
+
+export function getNurseList (data) {
+  return http.get(`/mo/user/list?current=${data.current}&size=${data.size}`)
+}

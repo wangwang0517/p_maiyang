@@ -7,8 +7,17 @@
     </el-breadcrumb>
     <div class="line"></div>
     <el-form :model="doctorNurseForm" status-icon :rules="doctorNurseFormRules" ref="doctorNurseForm" label-width="100px">
-      <el-form-item label="姓名" prop="username">
+      <el-form-item label="用户名" prop="username">
         <el-input v-model="doctorNurseForm.username"></el-input>
+      </el-form-item>
+      <el-form-item label="密码" prop="password">
+        <el-input type="password" v-model="doctorNurseForm.password" autocomplete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="确认密码" prop="checkPassword">
+        <el-input type="password" v-model="doctorNurseForm.checkPassword" autocomplete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="姓名" prop="name">
+        <el-input v-model="doctorNurseForm.name"></el-input>
       </el-form-item>
       <el-form-item label="工号" prop="jobNumber">
         <el-input v-model="doctorNurseForm.employeeNumber"></el-input>
@@ -28,12 +37,7 @@
       </el-form-item>
       <el-form-item label="职称" prop="job">
         <el-select v-model="doctorNurseForm.job" placeholder="请选择职称" style="width: 100%">
-          <el-option
-            v-for="item in jobList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
+          <el-option v-for="item in jobList" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
 
@@ -45,6 +49,8 @@
 
 </template>
 <script>
+import { POSITION } from '../../utils/default'
+
 export default {
   data () {
     let validateUserName = (rule, value, callback) => {
@@ -55,7 +61,7 @@ export default {
       }
     }
     return {
-      jobList: [],
+      jobList: POSITION,
       procedureList: [],
       doctorNurseForm: {
         username: '',
@@ -99,23 +105,6 @@ export default {
     }, {
       value: '5',
       label: '病区五'
-    }]
-
-    this.jobList = [{
-      value: '1',
-      label: '医生'
-    }, {
-      value: '2',
-      label: '护士'
-    }, {
-      value: '3',
-      label: '院长'
-    }, {
-      value: '4',
-      label: '手术师'
-    }, {
-      value: '5',
-      label: '麻醉师'
     }]
   }
 }

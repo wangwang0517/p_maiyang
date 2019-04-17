@@ -13,17 +13,6 @@
       <el-form-item label="电话" prop="phone">
         <el-input v-model="procedureForm.phone"></el-input>
       </el-form-item>
-      <el-form-item label="值班护士" prop="nurse">
-        <el-select v-model="procedureForm.nurse" filterable placeholder="请选择医护" style="width: 100%">
-          <el-option
-            v-for="item in doctorNurseList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-            <span><el-tag size="mini">{{ item.work }}</el-tag>  {{ item.label }}</span>
-          </el-option>
-        </el-select>
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('procedureForm')">提交</el-button>
       </el-form-item>
@@ -32,25 +21,35 @@
 
 </template>
 <script>
+import { saveWards } from '../../api/wards'
+
 export default {
   data () {
     let validateName = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入用户名'))
+        callback(new Error('请输入病区名称'))
+      } else {
+        callback()
+      }
+    }
+    let validatePhone = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入病区电话'))
       } else {
         callback()
       }
     }
     return {
-      doctorNurseList: [],
       procedureForm: {
         name: '',
-        phone: '',
-        nurse: ''
+        phone: ''
       },
       procedureFormRules: {
         name: [
           { validator: validateName, trigger: 'blur' }
+        ],
+        phone: [
+          { validator: validatePhone, trigger: 'blur' }
         ]
       }
     }
@@ -59,36 +58,19 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!')
+          saveWards(this.procedureForm).then(() => {
+            this.$message({
+              message: '保存成功',
+              type: 'success'
+            })
+            this.$router.push({ path: `/procedure/list` })
+          })
         } else {
           console.log('error submit!!')
           return false
         }
       })
     }
-  },
-  created () {
-    this.doctorNurseList = [{
-      value: '1',
-      label: '张三',
-      work: '护士'
-    }, {
-      value: '2',
-      label: '李四',
-      work: '院长'
-    }, {
-      value: '3',
-      label: '王五',
-      work: '医生'
-    }, {
-      value: '4',
-      label: '赵柳',
-      work: '护士'
-    }, {
-      value: '5',
-      label: '朱琪',
-      work: '护士长'
-    }]
   }
 }
 </script>

@@ -18,7 +18,7 @@
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
         </el-input>
       </div>
-      <el-table :data="tableData" style="width: 100%" header-row-class-name="table-header" align="center">
+      <el-table v-loading="loading" :data="tableData" style="width: 100%" header-row-class-name="table-header" align="center">
         <el-table-column prop="username" label="姓名"></el-table-column>
         <el-table-column prop="hospitalizationNumber" label="住院号"></el-table-column>
         <el-table-column prop="procedure" label="病区"></el-table-column>
@@ -52,65 +52,31 @@
 </template>
 
 <script>
+import { getNurseList } from '../../api/user'
+import { PAGE_SIZE } from '../../utils/default'
+
 export default {
   data () {
     return {
-      patientType: '1',
-      search: '',
-      tableDataType: 0,
-      totalPage: 100,
-      currentPage: 3,
-      tableData: [{
-        id: 3,
-        username: '张三',
-        hospitalizationNumber: '10003',
-        bedNumber: 'B4F5001',
-        procedure: '肠胃科',
-        startTime: '2018-04-06 12:34:45',
-        endTime: '2018-04-10 12:34:45',
-        status: '1'
-      }, {
-        id: 2,
-        username: '李四',
-        hospitalizationNumber: '10004',
-        bedNumber: 'B4F5002',
-        procedure: '肠胃科',
-        startTime: '2018-04-06 12:34:45',
-        endTime: '2018-04-10 12:34:45',
-        status: '0'
-      }, {
-        id: 1,
-        username: '王五',
-        hospitalizationNumber: '10001',
-        bedNumber: 'B4F5004',
-        procedure: '肠胃科',
-        startTime: '2018-04-06 12:34:45',
-        endTime: '2018-04-10 12:34:45',
-        status: '0'
-      }]
+      loading: false,
+      totalPage: 1,
+      currentPage: 1,
+      tableData: []
     }
   },
   computed: {
-    getStatus () {
-      return function (status) {
-        if (Number.parseInt(status) === 1) {
-          return '已解绑'
-        } else {
-          return '绑定中'
-        }
-      }
-    },
-    getStatusFormatter () {
-      return function (status) {
-        if (Number.parseInt(status) === 1) {
-          return 'Info.vue'
-        } else {
-          return 'success'
-        }
-      }
-    }
   },
   methods: {
+    loadData () {
+      this.loading = true
+      getNurseList({ current: this.currentPage, size: PAGE_SIZE }).then(data => {
+        this.tableData = data.data.records
+        this.totalPage = data.data.pages
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
+      })
+    },
     handleSearch () {
       console.info(`当前筛选条件：${this.search}`)
       console.info(`当前筛选条件：${this.patientType}`)
@@ -128,6 +94,9 @@ export default {
       console.info(`当前记录id：${id}`)
       this.$router.push({ path: `/patient/edit/${id}` })
     }
+  },
+  created () {
+    this.loadData()
   }
 }
 </script>
