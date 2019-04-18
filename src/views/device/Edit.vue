@@ -11,14 +11,14 @@
       <el-form-item label="设备名称" prop="name">
         <el-input v-model="deviceForm.name"></el-input>
       </el-form-item>
-      <el-form-item label="设备型号" prop="type">
-        <el-input v-model="deviceForm.type"></el-input>
+      <el-form-item label="设备型号" prop="model">
+        <el-input v-model="deviceForm.model"></el-input>
       </el-form-item>
-      <el-form-item label="设备序列号" prop="series">
-        <el-input v-model="deviceForm.series"></el-input>
+      <el-form-item label="设备序列号" prop="serialId">
+        <el-input v-model="deviceForm.serialId"></el-input>
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-radio-group v-model="deviceForm.status" size="medium">
+      <el-form-item label="状态" prop="state">
+        <el-radio-group v-model="deviceForm.state" size="medium">
           <el-radio border label="1">故障</el-radio>
           <el-radio border label="0">正常</el-radio>
         </el-radio-group>
@@ -31,6 +31,7 @@
 
 </template>
 <script>
+import { getDeviceInfo, updateDeviceInfo } from '../../api/device'
 export default {
   data () {
     let validateName = (rule, value, callback) => {
@@ -40,17 +41,32 @@ export default {
         callback()
       }
     }
+    let validateModel = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入设备型号'))
+      } else {
+        callback()
+      }
+    }
+    let validateSerialId = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入设备序列号'))
+      } else {
+        callback()
+      }
+    }
     return {
+      id: '',
       deviceForm: {
-        name: '设备一',
-        type: '型号一',
-        series: '1234567',
-        status: '1'
+        name: '',
+        model: '',
+        serialId: '',
+        state: ''
       },
       deviceFormRules: {
-        name: [
-          { validator: validateName, trigger: 'blur' }
-        ]
+        name: [{ validator: validateName, trigger: 'blur' }],
+        model: [{ validator: validateModel, trigger: 'blur' }],
+        serialId: [{ validator: validateSerialId, trigger: 'blur' }]
       }
     }
   },
@@ -58,9 +74,12 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$notify({
-            message: `提交信息`,
-            showClose: false
+          updateDeviceInfo(this.id, this.deviceForm).then(() => {
+            this.$message({
+              message: '保存成功',
+              type: 'success'
+            })
+            this.$router.push({ path: `/device/list` })
           })
         } else {
           console.log('error submit!!')
@@ -70,7 +89,13 @@ export default {
     }
   },
   created () {
-    console.info(`当前用户id为：${this.$route.params.id}`)
+    this.id = this.$route.params.id
+    getDeviceInfo({ id: this.id }).then(data => {
+      this.deviceForm.name = data.data.name
+      this.deviceForm.model = data.data.model
+      this.deviceForm.serialId = data.data.serialId
+      this.deviceForm.state = data.data.state.toString()
+    })
   }
 }
 </script>

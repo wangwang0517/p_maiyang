@@ -44,3 +44,19 @@ export function getAlarmStateFormatterHtml (state) {
     return '未处理'
   }
 }
+
+export function getBindFlagFormatterClass (state) {
+  if (Boolean(state) === true) {
+    return 'danger'
+  } else {
+    return 'info'
+  }
+}
+
+export function getBindFlagFormatterHtml (state) {
+  if (Boolean(state) === true) {
+    return '已绑定'
+  } else {
+    return '未绑定'
+  }
+}

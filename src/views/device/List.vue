@@ -9,33 +9,40 @@
     <div class="information">
       <div class="data-filter">
         <el-button type="text" >筛选：</el-button>
-        <el-input placeholder="请输入内容" v-model="search" class="input-with-select">
-          <el-select v-model="deviceType" slot="prepend">
-            <el-option label="全部" value="1"></el-option>
-            <el-option label="正常" value="2"></el-option>
-            <el-option label="故障" value="3"></el-option>
-          </el-select>
-          <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
-        </el-input>
+
+        <el-select v-model="state" style="margin-right: 10px">
+          <el-option label="全部" value=""></el-option>
+          <el-option label="正常" value="1"></el-option>
+          <el-option label="故障" value="0"></el-option>
+        </el-select>
+
+        <el-select v-model="bind" style="margin-right: 10px">
+          <el-option label="全部" value=""></el-option>
+          <el-option label="已绑定" value="true"></el-option>
+          <el-option label="未绑定" value="false"></el-option>
+        </el-select>
+        <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
       </div>
-      <el-table :data="tableData" style="width: 100%" header-row-class-name="table-header">
+      <el-table v-loading="loading" :data="tableData" style="width: 100%" header-row-class-name="table-header">
         <el-table-column prop="name" label="设备名称"></el-table-column>
-        <el-table-column prop="type" label="设备类型"></el-table-column>
-        <el-table-column prop="series" label="序列号"></el-table-column>
-        <el-table-column prop="user" label="绑定的用户">
+        <el-table-column prop="model" label="设备类型"></el-table-column>
+        <el-table-column prop="power" label="电量"></el-table-column>
+        <el-table-column prop="serialId" label="序列号"></el-table-column>
+        <el-table-column prop="state" label="state"></el-table-column>
+<!--        <el-table-column prop="user" label="绑定的用户">-->
+<!--          <template slot-scope="scope">-->
+<!--            <el-button @click="handleUserClick(scope.row.user.id)" type="text" size="mini">{{scope.row.user.name}}</el-button>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
+        <el-table-column prop="bindFlag" label="状态">
           <template slot-scope="scope">
-            <el-button @click="handleUserClick(scope.row.user.id)" type="text" size="mini">{{scope.row.user.name}}</el-button>
-          </template>
-        </el-table-column>
-        <el-table-column prop="status" label="状态">
-          <template slot-scope="scope">
-            <el-tag :type="getStatusFormatter(scope.row.status)" close-transition>{{getStatus(scope.row.status)}}</el-tag>
+            <el-tag :type="getBindFlagFormatter(scope.row.bindFlag)" close-transition>{{getBindFlag(scope.row.bindFlag)}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template slot-scope="scope">
             <el-button @click="handleEditClick(scope.row.id)" type="text" size="small">编辑</el-button>
-            <el-button @click="handleEditClick(scope.row.id)" type="text" size="small">删除</el-button>
+            <el-button @click="handleDeleteClick(scope.row.id)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -54,81 +61,76 @@
 </template>
 
 <script>
+import { getDeviceList, deleteDevice } from '../../api/device'
+import { PAGE_SIZE } from '../../utils/default'
+import { getBindFlagFormatterClass, getBindFlagFormatterHtml} from '../../utils/format'
+
 export default {
   data () {
     return {
-      deviceType: '1',
-      search: '',
-      totalPage: 100,
-      currentPage: 3,
-      tableData: [{
-        id: 3,
-        name: '设备三',
-        type: '型号三',
-        series: '123456789',
-        user: {
-          id: 1,
-          name: '王五'
-        },
-        status: '0'
-      }, {
-        id: 2,
-        name: '设备二',
-        type: '型号二',
-        series: '123456789',
-        user: {
-          id: 2,
-          name: '张三'
-        },
-        status: '0'
-      }, {
-        id: 1,
-        name: '设备一',
-        type: '型号一',
-        series: '123456789',
-        user: { },
-        status: '0'
-      }]
+      loading: false,
+      state: '',
+      bind: '',
+      totalPage: 1,
+      currentPage: 1,
+      tableData: []
     }
   },
   computed: {
-    getStatus () {
-      return function (status) {
-        if (Number.parseInt(status) === 1) {
-          return '故障'
-        } else {
-          return '正常'
-        }
+    getBindFlag () {
+      return function (state) {
+        return getBindFlagFormatterHtml(state)
       }
     },
-    getStatusFormatter () {
-      return function (status) {
-        if (Number.parseInt(status) === 1) {
-          return 'danger'
-        } else {
-          return 'success'
-        }
+    getBindFlagFormatter () {
+      return function (state) {
+        return getBindFlagFormatterClass(state)
       }
     }
   },
   methods: {
+    loadData () {
+      this.loading = true
+      getDeviceList({ current: this.currentPage, size: PAGE_SIZE, bind: this.bind, state: this.state}).then(data => {
+        this.tableData = data.data.records
+        this.totalPage = data.data.pages
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
+      })
+    },
     handleSearch () {
-      console.info(`当前筛选条件：${this.search}`)
-      console.info(`当前筛选条件：${this.deviceType}`)
+      this.loadData()
     },
     handleCurrentChange (currentPage) {
-      console.info(`当前页面：${currentPage}`)
-      console.info(`当前筛选条件：${this.search}`)
-      console.info(`当前筛选条件：${this.deviceType}`)
+      this.currentPage = currentPage
+      this.loadData()
     },
-    handleUserClick (id) {
-      console.info(`当前记录id：${id}`)
-      this.$router.push({ path: `/patient/info/${id}` })
+    handleDeleteClick (id) {
+      this.$confirm('此操作将永久删除该, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.loading = true
+        deleteDevice({ id: id }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+          this.loadData()
+        })
+      }).catch(() => {
+        this.loading = true
+      })
     },
     handleEditClick (id) {
       console.info(`当前记录id：${id}`)
       this.$router.push({ path: `/device/edit/${id}` })
     }
-  }
-}
+  },
+   created () {
+    this.loadData()
+   }
+ }
 </script>
