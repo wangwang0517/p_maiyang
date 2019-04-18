@@ -13,5 +13,8 @@ export function deleteWards (data) {
 }
 
 export function setNurse (data) {
-  return http.put('/mo/wards/set', data)
+  let config = {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }
+  return http.put('/mo/wards/set', data, config)
 }

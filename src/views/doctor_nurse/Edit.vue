@@ -48,7 +48,7 @@
 import { POSITION, ALL_RECORD } from '../../utils/default'
 import { getWardsList } from '../../api/wards'
 import { Base64 } from 'js-base64'
-import { saveNurse, getNurseInfo, updateNurseInfo } from '../../api/user'
+import { getNurseInfo, updateNurseInfo } from '../../api/user'
 export default {
   data () {
     let validateUserName = (rule, value, callback) => {
@@ -112,14 +112,15 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.doctorNurseForm.typeName = this.jobList.filter(item => {
-            return item.value === this.doctorNurseForm.typeId
+          let params = this.doctorNurseForm
+          params.typeName = this.jobList.filter(item => {
+            return item.value === params.typeId
           })[0].label
-          this.doctorNurseForm.wardsId = this.doctorNurseForm.wardsId.join(',')
-          if (this.doctorNurseForm.password) {
-            this.doctorNurseForm.password = Base64.encode(this.doctorNurseForm.password)
+          params.wardsId = params.wardsId.join(',')
+          if (params.password) {
+            params.password = Base64.encode(params.password)
           }
-          updateNurseInfo(this.doctorNurseForm).then(() => {
+          updateNurseInfo(this.id, params).then(() => {
             this.$message({
               message: '保存成功',
               type: 'success'
