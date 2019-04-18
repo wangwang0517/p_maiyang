@@ -18,3 +18,11 @@ export function updateInfo (data) {
 export function getNurseList (data) {
   return http.get(`/mo/user/list?current=${data.current}&size=${data.size}`)
 }
+
+export function saveNurse (data) {
+  return http.post('/mo/user/add', data)
+}
+
+export function deleteNurse (data) {
+  return http.delete(`/mo/user/delete?id=${data.id}`)
+}

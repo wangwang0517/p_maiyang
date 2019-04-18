@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { getNurseList } from '../../api/user'
+import { getNurseList, deleteNurse } from '../../api/user'
 import { PAGE_SIZE } from '../../utils/default'
 
 export default {
@@ -67,7 +67,22 @@ export default {
       this.loadData()
     },
     handleDeleteClick (id) {
-      console.info(`当前记录id：${id}`)
+      this.$confirm('此操作将永久删除该, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.loading = true
+        deleteNurse({ id: id }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+          this.loadData()
+        })
+      }).catch(() => {
+        this.loading = true
+      })
     },
     handleEditClick (id) {
       console.info(`当前记录id：${id}`)
