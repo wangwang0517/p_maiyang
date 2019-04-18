@@ -12,9 +12,9 @@
         <el-table-column prop="phone" label="电话"></el-table-column>
         <el-table-column label="值班护士">
           <template slot-scope="scope">
-            <el-select v-model="scope.row.userId" placeholder="请选择" @change="changeUser">
+            <el-select v-model="scope.row.userId" placeholder="请选择" @change="changeUser($event, scope.row.id)">
               <el-option
-                v-for="item in options"
+                v-for="item in nurseList"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value">
@@ -43,13 +43,14 @@
 </template>
 
 <script>
-import { getWardsList, deleteWards } from '../../api/wards'
-import { PAGE_SIZE } from '../../utils/default'
+import { getWardsList, deleteWards, setNurse } from '../../api/wards'
+import { PAGE_SIZE, ALL_RECORD } from '../../utils/default'
+import { getNurseList } from '../../api/user'
 
 export default {
   data () {
     return {
-      options: [],
+      nurseList: [],
       totalPage: 1,
       currentPage: 1,
       loading: true,
@@ -89,11 +90,30 @@ export default {
         this.loading = true
       })
     },
-    changeUser (value) {
+    changeUser (value, id) {
+      this.loading = true
+      let formData = new FormData()
+      formData.append('id', id)
+      formData.append('userId', value)
+      setNurse(formData).then(() => {
+        this.$message({
+          type: 'success',
+          message: '设置成功!'
+        })
+        this.loadData()
+      })
     }
   },
   created () {
     this.loadData()
+    getNurseList({ current: 1, size: ALL_RECORD }).then(data => {
+      this.nurseList = data.data.records.map(item => {
+        return {
+          value: item.id,
+          label: item.name
+        }
+      })
+    })
   }
 }
 </script>

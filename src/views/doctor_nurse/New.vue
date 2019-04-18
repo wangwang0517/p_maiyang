@@ -140,7 +140,7 @@ export default {
   },
   created () {
     getWardsList({ current: 1, size: ALL_RECORD }).then(data => {
-      this.procedureList = data.data.records.map((item, index) => {
+      this.procedureList = data.data.records.map(item => {
         return {
           id: item.id,
           name: item.name

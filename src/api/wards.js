@@ -11,3 +11,7 @@ export function saveWards (data) {
 export function deleteWards (data) {
   return http.delete(`/mo/wards/delete?id=${data.id}`)
 }
+
+export function setNurse (data) {
+  return http.put('/mo/wards/set', data)
+}

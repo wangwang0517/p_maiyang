@@ -26,3 +26,15 @@ export function saveNurse (data) {
 export function deleteNurse (data) {
   return http.delete(`/mo/user/delete?id=${data.id}`)
 }
+
+export function getNurseInfo (data) {
+  return http.get(`/mo/user/one?id=${data.id}`)
+}
+
+export function updateNurseInfo (data) {
+  let config = {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }
+  return http.put('/mo/user/mod', data, config)
+}
+
