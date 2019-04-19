@@ -45,18 +45,34 @@ export function getAlarmStateFormatterHtml (state) {
   }
 }
 
-export function getBindFlagFormatterClass (state) {
+export function getDeviceBindFlagFormatterClass (state) {
   if (Boolean(state) === true) {
     return 'danger'
   } else {
-    return 'info'
+    return 'success'
   }
 }
 
-export function getBindFlagFormatterHtml (state) {
+export function getDeviceBindFlagFormatterHtml (state) {
   if (Boolean(state) === true) {
     return '已绑定'
   } else {
     return '未绑定'
+  }
+}
+
+export function getDeviceStateFormatterClass (state) {
+  if (Number.parseInt(state) === 0) {
+    return 'success'
+  } else {
+    return 'danger'
+  }
+}
+
+export function getDeviceStateFormatterHtml (state) {
+  if (Number.parseInt(state) === 0) {
+    return '正常'
+  } else {
+    return '故障'
   }
 }

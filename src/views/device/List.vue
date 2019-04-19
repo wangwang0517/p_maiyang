@@ -12,8 +12,8 @@
 
         <el-select v-model="state" style="margin-right: 10px">
           <el-option label="全部" value=""></el-option>
-          <el-option label="正常" value="1"></el-option>
-          <el-option label="故障" value="0"></el-option>
+          <el-option label="正常" value="0"></el-option>
+          <el-option label="故障" value="1"></el-option>
         </el-select>
 
         <el-select v-model="bind" style="margin-right: 10px">
@@ -28,15 +28,14 @@
         <el-table-column prop="model" label="设备类型"></el-table-column>
         <el-table-column prop="power" label="电量"></el-table-column>
         <el-table-column prop="serialId" label="序列号"></el-table-column>
-        <el-table-column prop="state" label="state"></el-table-column>
-<!--        <el-table-column prop="user" label="绑定的用户">-->
-<!--          <template slot-scope="scope">-->
-<!--            <el-button @click="handleUserClick(scope.row.user.id)" type="text" size="mini">{{scope.row.user.name}}</el-button>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
-        <el-table-column prop="bindFlag" label="状态">
+        <el-table-column prop="state" label="设备状态">
           <template slot-scope="scope">
-            <el-tag :type="getBindFlagFormatter(scope.row.bindFlag)" close-transition>{{getBindFlag(scope.row.bindFlag)}}</el-tag>
+            <el-tag :type="getStateFormatter(scope.row.state)" close-transition><strong>{{getState(scope.row.state)}}</strong></el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="bindFlag" label="绑定状态">
+          <template slot-scope="scope">
+            <el-tag :type="getBindFlagFormatter(scope.row.bindFlag)" close-transition><strong>{{getBindFlag(scope.row.bindFlag)}}</strong></el-tag>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="150">
@@ -63,7 +62,7 @@
 <script>
 import { getDeviceList, deleteDevice } from '../../api/device'
 import { PAGE_SIZE } from '../../utils/default'
-import { getBindFlagFormatterClass, getBindFlagFormatterHtml} from '../../utils/format'
+import { getDeviceBindFlagFormatterClass, getDeviceBindFlagFormatterHtml, getDeviceStateFormatterClass, getDeviceStateFormatterHtml } from '../../utils/format'
 
 export default {
   data () {
@@ -79,19 +78,29 @@ export default {
   computed: {
     getBindFlag () {
       return function (state) {
-        return getBindFlagFormatterHtml(state)
+        return getDeviceBindFlagFormatterHtml(state)
       }
     },
     getBindFlagFormatter () {
       return function (state) {
-        return getBindFlagFormatterClass(state)
+        return getDeviceBindFlagFormatterClass(state)
+      }
+    },
+    getState () {
+      return function (state) {
+        return getDeviceStateFormatterHtml(state)
+      }
+    },
+    getStateFormatter () {
+      return function (state) {
+        return getDeviceStateFormatterClass(state)
       }
     }
   },
   methods: {
     loadData () {
       this.loading = true
-      getDeviceList({ current: this.currentPage, size: PAGE_SIZE, bind: this.bind, state: this.state}).then(data => {
+      getDeviceList({ current: this.currentPage, size: PAGE_SIZE, bind: this.bind, state: this.state }).then(data => {
         this.tableData = data.data.records
         this.totalPage = data.data.pages
         this.loading = false
@@ -129,8 +138,8 @@ export default {
       this.$router.push({ path: `/device/edit/${id}` })
     }
   },
-   created () {
+  created () {
     this.loadData()
-   }
- }
+  }
+}
 </script>

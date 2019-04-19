@@ -19,8 +19,8 @@
       </el-form-item>
       <el-form-item label="状态" prop="state">
         <el-radio-group v-model="deviceForm.state" size="medium">
-          <el-radio border label="1">故障</el-radio>
           <el-radio border label="0">正常</el-radio>
+          <el-radio border label="1">故障</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item>
@@ -56,8 +56,8 @@ export default {
       }
     }
     return {
-      id: '',
       deviceForm: {
+        id: '',
         name: '',
         model: '',
         serialId: '',
@@ -74,7 +74,7 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          updateDeviceInfo(this.id, this.deviceForm).then(() => {
+          updateDeviceInfo(this.deviceForm).then(() => {
             this.$message({
               message: '保存成功',
               type: 'success'
@@ -89,8 +89,8 @@ export default {
     }
   },
   created () {
-    this.id = this.$route.params.id
-    getDeviceInfo({ id: this.id }).then(data => {
+    this.deviceForm.id = this.$route.params.id
+    getDeviceInfo({ id: this.deviceForm.id }).then(data => {
       this.deviceForm.name = data.data.name
       this.deviceForm.model = data.data.model
       this.deviceForm.serialId = data.data.serialId

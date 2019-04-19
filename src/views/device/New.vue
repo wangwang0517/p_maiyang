@@ -18,8 +18,8 @@
       </el-form-item>
       <el-form-item label="状态" prop="state">
         <el-radio-group v-model="deviceForm.state" size="medium">
-          <el-radio border label="1">故障</el-radio>
           <el-radio border label="0">正常</el-radio>
+          <el-radio border label="1">故障</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item>

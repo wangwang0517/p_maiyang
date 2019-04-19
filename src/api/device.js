@@ -15,7 +15,6 @@ export function getDeviceInfo (data) {
   return http.get(`/mo/device/one?id=${data.id}`)
 }
 
-export function updateDeviceInfo (id, data) {
-  return http.put(`/mo/device/mod?id=${id}`, data)
+export function updateDeviceInfo (data) {
+  return http.put('/mo/device/mod', data)
 }
-
