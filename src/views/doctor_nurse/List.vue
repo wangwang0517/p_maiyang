@@ -81,7 +81,7 @@ export default {
           this.loadData()
         })
       }).catch(() => {
-        this.loading = true
+        this.loading = false
       })
     },
     handleEditClick (id) {
