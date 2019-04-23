@@ -13,7 +13,7 @@
         <el-button size="mini" type="primary" @click="getTableData(1)" :plain="state !== 1 ">已读</el-button>
         <el-button size="mini" type="primary" @click="getTableData(0)" :plain="state !== 0 ">未读</el-button>
       </div>
-      <el-table :data="tableData" style="width: 100%" header-row-class-name="table-header" align="center">
+      <el-table v-loading="loading" :data="tableData" style="width: 100%" header-row-class-name="table-header" align="center">
         <el-table-column prop="patientName" label="姓名"></el-table-column>
         <el-table-column prop="hosNumber" label="住院号"></el-table-column>
         <el-table-column prop="bedNumber" label="床号"></el-table-column>
@@ -21,12 +21,12 @@
         <el-table-column prop="rate" label="脉率值"></el-table-column>
         <el-table-column prop="urgentLevel" label="紧急程度">
           <template slot-scope="scope">
-            <el-tag :class="getLevelFormatter(scope.row.urgentLevel)" close-transition>{{getLevel(scope.row.urgentLevel)}}</el-tag>
+            <el-tag :class="getLevelFormatter(scope.row.urgentLevel)" size="small"  close-transition>{{getLevel(scope.row.urgentLevel)}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="state" label="处理状态">
           <template slot-scope="scope">
-            <el-tag :class="getStatusFormatter(scope.row.state)" close-transition><strong>{{getStatus(scope.row.state)}}</strong></el-tag>
+            <el-tag :class="getStatusFormatter(scope.row.state)" size="small"  close-transition><strong>{{getStatus(scope.row.state)}}</strong></el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="addTime" label="时间" width="170px"></el-table-column>
@@ -54,6 +54,7 @@ import { getUrgentLevelFormatterClass, getUrgentLevelFormatterHtml, getAlarmStat
 export default {
   data () {
     return {
+      loading: false,
       totalPage: 1,
       currentPage: 1,
       state: '',
@@ -84,9 +85,13 @@ export default {
   },
   methods: {
     loadData () {
+      this.loading = true
       getAlarmList({ current: this.currentPage, size: PAGE_SIZE, state: this.state }).then(data => {
         this.tableData = data.data.records
         this.totalPage = data.data.pages
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
       })
     },
     getTableData (type) {

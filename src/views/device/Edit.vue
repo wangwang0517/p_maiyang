@@ -95,6 +95,8 @@ export default {
       this.deviceForm.model = data.data.model
       this.deviceForm.serialId = data.data.serialId
       this.deviceForm.state = data.data.state.toString()
+    }).catch(err => {
+      console.info(err)
     })
   }
 }

@@ -23,11 +23,7 @@
         <el-table-column prop="hosNumber" label="住院号"></el-table-column>
         <el-table-column prop="wardsName" label="病区"></el-table-column>
         <el-table-column prop="bedNumber" label="床号"></el-table-column>
-        <el-table-column prop="deviceId" label="设备">
-          <template slot-scope="scope">
-            <el-button @click="handleDeviceClick(scope.row.id)" type="text" size="small">{{scope.row.deviceId}}</el-button>
-          </template>
-        </el-table-column>
+        <el-table-column prop="deviceNameValue" label="设备"></el-table-column>
         <el-table-column prop="bindTime" label="绑定时间" width="170px"></el-table-column>
         <el-table-column prop="unbindTime" label="解绑时间" width="170px"></el-table-column>
         <el-table-column label="操作" width="150">
@@ -112,14 +108,10 @@ export default {
             message: '解绑成功!'
           })
           this.loadData()
+        }).catch(() => {
+          this.loading = false
         })
-      }).catch(() => {
-        this.loading = false
       })
-    },
-    handleDeviceClick (id) {
-      console.info(`当前记录id：${id}`)
-      this.$router.push({ path: `/device/info/${id}` })
     }
   },
   created () {

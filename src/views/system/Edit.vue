@@ -110,7 +110,11 @@ export default {
             this.$refs[formName].resetFields()
             getInfo().then(data => {
               this.$store.commit('updateInfo', data.data)
+            }).catch(err => {
+              console.info(err)
             })
+          }).catch(err => {
+            console.info(err)
           })
         } else {
           console.log('error submit!!')

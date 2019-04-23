@@ -85,9 +85,9 @@ export default {
             message: '删除成功!'
           })
           this.loadData()
+        }).catch(() => {
+          this.loading = false
         })
-      }).catch(() => {
-        this.loading = false
       })
     },
     changeUser (value, id) {
@@ -101,6 +101,8 @@ export default {
           message: '设置成功!'
         })
         this.loadData()
+      }).catch(err => {
+        console.info(err)
       })
     }
   },

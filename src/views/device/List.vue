@@ -128,13 +128,12 @@ export default {
             message: '删除成功!'
           })
           this.loadData()
+        }).catch(() => {
+          this.loading = false
         })
-      }).catch(() => {
-        this.loading = false
       })
     },
     handleEditClick (id) {
-      console.info(`当前记录id：${id}`)
       this.$router.push({ path: `/device/edit/${id}` })
     }
   },

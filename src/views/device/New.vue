@@ -79,6 +79,8 @@ export default {
               type: 'success'
             })
             this.$router.push({ path: `/device/list` })
+          }).catch(err => {
+            console.info(err)
           })
         } else {
           console.log('error submit!!')

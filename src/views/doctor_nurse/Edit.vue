@@ -152,6 +152,8 @@ export default {
       this.doctorNurseForm.workno = data.data.workno
       this.doctorNurseForm.phone = data.data.phone
       this.doctorNurseForm.wardsId = data.data.wardsId.split(',')
+    }).catch(err => {
+      console.info(err)
     })
   }
 }

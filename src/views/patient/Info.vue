@@ -17,24 +17,30 @@
         <el-table-column prop="bindTime" label="绑定时间" width="170px"></el-table-column>
         <el-table-column prop="unbindTime" label="解绑时间" width="170px"></el-table-column>
         <el-table-column prop="unbindUserName" label="解绑操作人"></el-table-column>
+        <el-table-column label="操作"  width="150px">
+          <template slot-scope="scope">
+            <el-button type="primary" size="mini" @click="handleAlarm(scope.row.id)">处理</el-button>
+            <el-button v-if="!scope.row.unbindUserId" type="primary" size="mini" @click="unbindPatient(scope.row.id)">解绑</el-button>
+          </template>
+        </el-table-column>
       </el-table>
       <div class="line"></div>
-      <el-table :data="alarmData" style="width: 100%" header-row-class-name="table-header" size="mini">
+      <el-table v-loading="loading" :data="alarmData" style="width: 100%" header-row-class-name="table-header" size="mini">
         <el-table-column label="报警历史" align="center">
           <el-table-column prop="oxygen" label="脉氧值"></el-table-column>
           <el-table-column prop="rate" label="脉率值"></el-table-column>
-          <el-table-column prop="level" label="紧急程度">
+          <el-table-column prop="urgentLevel" label="紧急程度">
             <template slot-scope="scope">
-              <el-tag size="mini" :type="getLevelFormatter(scope.row.level)" close-transition>{{getLevel(scope.row.level)}}</el-tag>
+              <el-tag :class="getLevelFormatter(scope.row.urgentLevel)" size="small" close-transition>{{getLevel(scope.row.urgentLevel)}}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="status" label="处理状态">
+          <el-table-column prop="state" label="处理状态">
             <template slot-scope="scope">
-              <el-tag size="mini" :type="getStatusFormatter(scope.row.status)" close-transition>{{getStatus(scope.row.status)}}</el-tag>
+              <el-tag :class="getStatusFormatter(scope.row.state)" size="small" close-transition><strong>{{getStatus(scope.row.state)}}</strong></el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="time" label="时间" width="170px"></el-table-column>
-          <el-table-column prop="processor" label="处理人"></el-table-column>
+          <el-table-column prop="addTime" label="时间" width="170px"></el-table-column>
+          <el-table-column prop="userName" label="处理人"></el-table-column>
         </el-table-column>
       </el-table>
       <el-pagination
@@ -50,7 +56,7 @@
         <el-table-column label="脉氧脉率历史" align="center">
           <el-table-column prop="oxygen" label="脉氧值"></el-table-column>
           <el-table-column prop="rate" label="脉率值"></el-table-column>
-          <el-table-column prop="time" label="时间" width="170px"></el-table-column>
+          <el-table-column prop="acqTime" label="时间" width="170px"></el-table-column>
         </el-table-column>
       </el-table>
       <el-pagination
@@ -67,126 +73,123 @@
 </template>
 
 <script>
-import { getPatientInfo } from '../../api/patient'
+import { getPatientInfo, unbindPatient } from '../../api/patient'
+import { PAGE_SIZE } from '../../utils/default'
+import { getPatientAlarmList, getPatientRecordList, handlePatientAlarm } from '../../api/alarm'
+import { getUrgentLevelFormatterClass, getUrgentLevelFormatterHtml, getAlarmStateFormatterClass, getAlarmStateFormatterHtml } from '../../utils/format'
+
 export default {
   data () {
     return {
       id: '',
+      loading: false,
       userData: [],
-      alarmTotalPage: 100,
-      alarmCurrentPage: 3,
-      alarmData: [{
-        oxygen: '89',
-        rate: '70',
-        level: '1',
-        status: '1',
-        time: '2018-04-10 12:34:45',
-        processor: '张医生'
-      }, {
-        oxygen: '99',
-        rate: '83',
-        level: '2',
-        status: '0',
-        time: '2018-04-10 12:34:45',
-        processor: ''
-      }, {
-        oxygen: '79',
-        rate: '63',
-        level: '3',
-        status: '0',
-        time: '2018-04-10 12:34:45',
-        processor: ''
-      }],
-      recordTotalPage: 100,
-      recordCurrentPage: 3,
-      recordData: [{
-        oxygen: '89',
-        rate: '70',
-        time: '2018-04-10 12:34:45'
-      }, {
-        oxygen: '99',
-        rate: '83',
-        time: '2018-04-10 12:34:45'
-      }, {
-        oxygen: '79',
-        rate: '63',
-        time: '2018-04-10 12:34:45'
-      }]
+      alarmTotalPage: 1,
+      alarmCurrentPage: 1,
+      alarmData: [],
+      recordTotalPage: 1,
+      recordCurrentPage: 1,
+      recordData: []
     }
   },
   computed: {
-    getStatus () {
-      return function (status) {
-        if (Number.parseInt(status) === 1) {
-          return '已解绑'
-        } else {
-          return '绑定中'
-        }
-      }
-    },
-    getStatusFormatter () {
-      return function (status) {
-        if (Number.parseInt(status) === 1) {
-          return 'Info.vue'
-        } else {
-          return 'success'
-        }
-      }
-    },
     getLevel () {
       return function (level) {
-        switch (Number.parseInt(level)) {
-          case 1 :
-            return '一级'
-          case 2 :
-            return '二级'
-          case 3 :
-            return '三级'
-          case 4 :
-            return '四级'
-          default:
-            return '其他'
-        }
+        return getUrgentLevelFormatterHtml(level)
+      }
+    },
+    getStatus () {
+      return function (state) {
+        return getAlarmStateFormatterHtml(state)
       }
     },
     getLevelFormatter () {
       return function (level) {
-        switch (Number.parseInt(level)) {
-          case 1 :
-            return 'success'
-          case 2 :
-            return 'Info.vue'
-          case 3 :
-            return 'warning'
-          case 4 :
-            return 'danger'
-          default:
-            return ''
-        }
+        return getUrgentLevelFormatterClass(level)
+      }
+    },
+    getStatusFormatter () {
+      return function (state) {
+        return getAlarmStateFormatterClass(state)
       }
     }
   },
   methods: {
-    handleAlarmCurrentChange (currentPage) {
-      console.info(`当前页面：${currentPage}`)
-      this.$notify({
-        message: `页面：${currentPage}`,
-        showClose: false
+    loadPatientData () {
+      this.loading = true
+      getPatientInfo(this.id).then(data => {
+        this.userData = new Array(data.data)
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
       })
     },
+    loadAlarmData () {
+      this.loading = true
+      getPatientAlarmList({ current: this.alarmCurrentPage, size: PAGE_SIZE, patientId: this.id }).then(data => {
+        this.alarmData = data.data.records
+        this.alarmTotalPage = data.data.pages
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+    loadRecordData () {
+      this.loading = true
+      getPatientRecordList({ current: this.recordCurrentPage, size: PAGE_SIZE, patientId: this.id }).then(data => {
+        this.recordData = data.data.records
+        this.recordTotalPage = data.data.pages
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+    handleAlarmCurrentChange (currentPage) {
+      this.alarmCurrentPage = currentPage
+      this.loadAlarmData()
+    },
     handleRecordCurrentChange (currentPage) {
-      console.info(`当前页面：${currentPage}`)
-      this.$notify({
-        message: `页面：${currentPage}`,
-        showClose: false
+      this.recordCurrentPage = currentPage
+      this.loadRecordData()
+    },
+    handleAlarm (id) {
+      this.loading = true
+      handlePatientAlarm(id).then(() => {
+        this.$message({
+          type: 'success',
+          message: '处理成功!'
+        })
+        this.loadAlarmData()
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+    unbindPatient (id) {
+      this.$confirm('此操作解绑设备, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.loading = true
+        unbindPatient(id).then(() => {
+          this.$message({
+            type: 'success',
+            message: '解绑成功!'
+          })
+          getPatientInfo(this.id).then(data => {
+            this.userData = new Array(data.data)
+          })
+        }).catch(() => {
+          this.loading = false
+        })
       })
     }
   },
   created () {
     this.id = this.$route.params.id
-    getPatientInfo(this.id).then(data => {
-      this.userData.push(data.data)
-    })
+    this.loadPatientData()
+    this.loadAlarmData()
+    this.loadRecordData()
   }
 }
 </script>

@@ -64,6 +64,8 @@ export default {
               type: 'success'
             })
             this.$router.push({ path: `/procedure/list` })
+          }).catch(err => {
+            console.info(err)
           })
         } else {
           console.log('error submit!!')
