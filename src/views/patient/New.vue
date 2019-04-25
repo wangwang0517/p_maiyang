@@ -45,7 +45,7 @@
 
 </template>
 <script>
-import { getWardsList } from '../../api/wards'
+import { getUserWards } from '../../api/user'
 import { getDeviceList } from '../../api/device'
 import { ALL_RECORD } from '../../utils/default'
 import { savePatient } from '../../api/patient'
@@ -126,7 +126,7 @@ export default {
     }
   },
   created () {
-    getWardsList({ current: 1, size: ALL_RECORD }).then(data => {
+    getUserWards().then(data => {
       this.procedureList = data.data.records.map(item => {
         return {
           id: item.id,
