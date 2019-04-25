@@ -7,43 +7,32 @@
     </el-breadcrumb>
     <div class="line"></div>
     <el-form :model="patientForm" status-icon :rules="patientFormRules" ref="patientForm" label-width="100px">
-      <el-form-item label="姓名" prop="username">
-        <el-input v-model="patientForm.username"></el-input>
+      <el-form-item label="姓名" prop="name">
+        <el-input v-model="patientForm.name"></el-input>
       </el-form-item>
-      <el-form-item label="住院号" prop="hospitalizationNumber">
-        <el-input v-model="patientForm.hospitalizationNumber" autocomplete="off"></el-input>
+      <el-form-item label="住院号" prop="hosNumber">
+        <el-input v-model="patientForm.hosNumber" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="床号" prop="bedNumber">
         <el-input v-model="patientForm.bedNumber"></el-input>
       </el-form-item>
-      <el-form-item label="病区" prop="procedure">
-        <el-select v-model="patientForm.procedure" placeholder="请选择病区" style="width: 100%">
+      <el-form-item label="病区" prop="wardsId">
+        <el-select v-model="patientForm.wardsId" placeholder="请选择病区" style="width: 100%">
           <el-option
             v-for="item in procedureList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="设备" prop="device">
-        <el-select v-model="patientForm.device" placeholder="请选择设备" style="width: 100%">
+      <el-form-item label="设备" prop="deviceId">
+        <el-select v-model="patientForm.deviceId" placeholder="请选择设备" style="width: 100%">
           <el-option
             v-for="item in deviceList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="医护" prop="doctor_nurse">
-        <el-select v-model="patientForm.doctor_nurse" filterable multiple placeholder="请选择医护" style="width: 100%">
-          <el-option
-            v-for="item in doctorNurseList"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-            <span><el-tag size="mini">{{ item.work }}</el-tag>  {{ item.label }}</span>
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
           </el-option>
         </el-select>
       </el-form-item>
@@ -56,11 +45,44 @@
 
 </template>
 <script>
+import { getWardsList } from '../../api/wards'
+import { getDeviceList } from '../../api/device'
+import { ALL_RECORD } from '../../utils/default'
+import { savePatient } from '../../api/patient'
+
 export default {
   data () {
-    let validateUserName = (rule, value, callback) => {
+    let validateName = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请输入用户名'))
+        callback(new Error('请输入病人姓名'))
+      } else {
+        callback()
+      }
+    }
+    let validateHosNumber = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入病人住院号'))
+      } else {
+        callback()
+      }
+    }
+    let validateBedNumber = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入病人床号'))
+      } else {
+        callback()
+      }
+    }
+    let validateDeviceId = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请选择病人设备'))
+      } else {
+        callback()
+      }
+    }
+    let validateWardsId = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请选择病人病区'))
       } else {
         callback()
       }
@@ -68,19 +90,19 @@ export default {
     return {
       deviceList: [],
       procedureList: [],
-      doctorNurseList: [],
       patientForm: {
-        username: '',
-        hospitalizationNumber: '',
+        name: '',
+        hosNumber: '',
         bedNumber: '',
-        device: '',
-        procedure: '',
-        doctor_nurse: []
+        deviceId: '',
+        wardsId: ''
       },
       patientFormRules: {
-        username: [
-          { validator: validateUserName, trigger: 'blur' }
-        ]
+        name: [{ validator: validateName, trigger: 'blur' }],
+        hosNumber: [{ validator: validateHosNumber, trigger: 'blur' }],
+        bedNumber: [{ validator: validateBedNumber, trigger: 'blur' }],
+        deviceId: [{ validator: validateDeviceId, trigger: 'blur' }],
+        wardsId: [{ validator: validateWardsId, trigger: 'blur' }]
       }
     }
   },
@@ -88,9 +110,14 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$notify({
-            message: `保存病人信息`,
-            showClose: false
+          savePatient(this.patientForm).then(() => {
+            this.$message({
+              message: '保存成功',
+              type: 'success'
+            })
+            this.$router.push({ path: `/patient/list` })
+          }).catch(err => {
+            console.info(err)
           })
         } else {
           return false
@@ -99,61 +126,22 @@ export default {
     }
   },
   created () {
-    this.procedureList = [{
-      value: '1',
-      label: '病区一'
-    }, {
-      value: '2',
-      label: '病区二'
-    }, {
-      value: '3',
-      label: '病区三'
-    }, {
-      value: '4',
-      label: '病区四'
-    }, {
-      value: '5',
-      label: '病区五'
-    }]
-
-    this.deviceList = [{
-      value: '1',
-      label: '设备一'
-    }, {
-      value: '2',
-      label: '设备二'
-    }, {
-      value: '3',
-      label: '设备三'
-    }, {
-      value: '4',
-      label: '设备四'
-    }, {
-      value: '5',
-      label: '设备五'
-    }]
-
-    this.doctorNurseList = [{
-      value: '1',
-      label: '张三',
-      work: '护士'
-    }, {
-      value: '2',
-      label: '李四',
-      work: '院长'
-    }, {
-      value: '3',
-      label: '王五',
-      work: '医生'
-    }, {
-      value: '4',
-      label: '赵柳',
-      work: '护士'
-    }, {
-      value: '5',
-      label: '朱琪',
-      work: '护士长'
-    }]
+    getWardsList({ current: 1, size: ALL_RECORD }).then(data => {
+      this.procedureList = data.data.records.map(item => {
+        return {
+          id: item.id,
+          name: item.name
+        }
+      })
+    })
+    getDeviceList({ current: 1, size: ALL_RECORD, bind: false, state: ''  }).then(data => {
+      this.deviceList = data.data.records.map(item => {
+        return {
+          id: item.id,
+          name: item.name
+        }
+      })
+    })
   }
 }
 </script>

@@ -11,3 +11,7 @@ export function unbindPatient (id) {
 export function getPatientInfo (id) {
   return http.get(`/mo/patient/detail?id=${id}`)
 }
+
+export function savePatient (data) {
+  return http.post('/mo/patient/add', data)
+}
