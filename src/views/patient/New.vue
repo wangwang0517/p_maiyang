@@ -127,14 +127,14 @@ export default {
   },
   created () {
     getUserWards().then(data => {
-      this.procedureList = data.data.records.map(item => {
+      this.procedureList = data.data.map(item => {
         return {
           id: item.id,
           name: item.name
         }
       })
     })
-    getDeviceList({ current: 1, size: ALL_RECORD, bind: false, state: ''  }).then(data => {
+    getDeviceList({ current: 1, size: ALL_RECORD, bind: false, state: '' }).then(data => {
       this.deviceList = data.data.records.map(item => {
         return {
           id: item.id,

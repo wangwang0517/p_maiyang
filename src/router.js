@@ -16,7 +16,7 @@ export default new Router({
     },
     {
       path: '/login',
-      name: 'login',
+      name: '报警信息-登录',
       component: login,
       meta: { hiddenCommonComponents: true }
     },

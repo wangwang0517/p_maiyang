@@ -26,7 +26,7 @@
         <el-table-column prop="deviceNameValue" label="设备"></el-table-column>
         <el-table-column prop="bindTime" label="绑定时间" width="170px"></el-table-column>
         <el-table-column prop="unbindTime" label="解绑时间" width="170px"></el-table-column>
-        <el-table-column label="操作" width="150">
+        <el-table-column label="操作" width="200">
           <template slot-scope="scope">
             <el-button @click="handleShowClick(scope.row.id)" type="text" size="small">查看</el-button>
             <el-button @click="handleEditClick(scope.row.id)" type="text" size="small">编辑</el-button>

@@ -35,6 +35,5 @@ export function updateNurseInfo (id, data) {
   return http.put(`/mo/user/mod?id=${id}`, data)
 }
 export function getUserWards () {
-  return http.get('/mo/user/own')
+  return http.get('/mo/wards/ownWards')
 }
-
