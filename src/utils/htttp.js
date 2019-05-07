@@ -1,6 +1,6 @@
 import axios from 'axios'
 import store from '../store'
-import router from "../router"
+import router from '../router'
 import { MessageBox, Message } from 'element-ui'
 
 const service = axios.create({
@@ -37,9 +37,9 @@ service.interceptors.response.use(
       if (res.code === 401) {
         MessageBox.alert('你的登录信息已过期', '提示', {
           confirmButtonText: '确定',
-          callback: action => {
-            store.commit('clearUserInfo');
-            router.push("/login")
+          callback: () => {
+            store.commit('clearUserInfo')
+            router.push('/login')
             location.reload()
           }
         })
@@ -55,9 +55,9 @@ service.interceptors.response.use(
   },
   error => {
     console.info(error)
-    Message('登录信息已失效');
-    store.commit('clearUserInfo');
-    router.push("/login")
+    Message('登录信息已失效')
+    store.commit('clearUserInfo')
+    router.push('/login')
     location.reload()
   }
 )

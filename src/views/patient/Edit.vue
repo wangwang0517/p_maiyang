@@ -45,116 +45,116 @@
 
 </template>
 <script>
-  import { getUserWards } from '../../api/user'
-  import { getDeviceList } from '../../api/device'
-  import { ALL_RECORD } from '../../utils/default'
-  import { updatePatient, getPatientInfo } from '../../api/patient'
-  export default {
-    data () {
-      let validateName = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入病人姓名'))
-        } else {
-          callback()
-        }
+import { getUserWards } from '../../api/user'
+import { getDeviceList } from '../../api/device'
+import { ALL_RECORD } from '../../utils/default'
+import { updatePatient, getPatientInfo } from '../../api/patient'
+export default {
+  data () {
+    let validateName = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入病人姓名'))
+      } else {
+        callback()
       }
-      let validateHosNumber = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入病人住院号'))
-        } else {
-          callback()
-        }
+    }
+    let validateHosNumber = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入病人住院号'))
+      } else {
+        callback()
       }
-      let validateBedNumber = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入病人床号'))
-        } else {
-          callback()
-        }
+    }
+    let validateBedNumber = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入病人床号'))
+      } else {
+        callback()
       }
-      let validateDeviceId = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请选择病人设备'))
-        } else {
-          callback()
-        }
+    }
+    let validateDeviceId = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请选择病人设备'))
+      } else {
+        callback()
       }
-      let validateWardsId = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请选择病人病区'))
-        } else {
-          callback()
-        }
+    }
+    let validateWardsId = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请选择病人病区'))
+      } else {
+        callback()
       }
-      return {
+    }
+    return {
 
-        deviceList: [],
-        procedureList: [],
-        patientForm: {
-          id: '',
-          name: '',
-          hosNumber: '',
-          bedNumber: '',
-          deviceId: '',
-          wardsId: ''
-        },
-        patientFormRules: {
-          name: [{ validator: validateName, trigger: 'blur' }],
-          hosNumber: [{ validator: validateHosNumber, trigger: 'blur' }],
-          bedNumber: [{ validator: validateBedNumber, trigger: 'blur' }],
-          deviceId: [{ validator: validateDeviceId, trigger: 'blur' }],
-          wardsId: [{ validator: validateWardsId, trigger: 'blur' }]
-        }
+      deviceList: [],
+      procedureList: [],
+      patientForm: {
+        id: '',
+        name: '',
+        hosNumber: '',
+        bedNumber: '',
+        deviceId: '',
+        wardsId: ''
+      },
+      patientFormRules: {
+        name: [{ validator: validateName, trigger: 'blur' }],
+        hosNumber: [{ validator: validateHosNumber, trigger: 'blur' }],
+        bedNumber: [{ validator: validateBedNumber, trigger: 'blur' }],
+        deviceId: [{ validator: validateDeviceId, trigger: 'blur' }],
+        wardsId: [{ validator: validateWardsId, trigger: 'blur' }]
       }
-    },
-    methods: {
-      submitForm (formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            updatePatient(this.patientForm).then(() => {
-              this.$message({
-                message: '保存成功',
-                type: 'success'
-              })
-              this.$router.push({ path: `/patient/list` })
-            }).catch(err => {
-              console.info(err)
+    }
+  },
+  methods: {
+    submitForm (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          updatePatient(this.patientForm).then(() => {
+            this.$message({
+              message: '保存成功',
+              type: 'success'
             })
-          } else {
-            return false
-          }
-        })
-      }
-    },
-    created () {
-      getUserWards().then(data => {
-        this.procedureList = data.data.map(item => {
-          return {
-            id: item.id,
-            name: item.name
-          }
-        })
-      })
-      getDeviceList({ current: 1, size: ALL_RECORD, bind: '', state: '' }).then(data => {
-        this.deviceList = data.data.records.map(item => {
-          return {
-            id: item.id,
-            name: item.name
-          }
-        })
-      })
-      this.patientForm.id = this.$route.params.id
-      getPatientInfo(this.patientForm.id).then(data => {
-        console.info(data)
-        let info = data.data
-        this.patientForm.name = info.name
-        this.patientForm.hosNumber = info.hosNumber
-        this.patientForm.bedNumber = info.bedNumber
-        this.patientForm.deviceId = info.deviceId
-        this.patientForm.wardsId = info.wardsId
-      }).catch(err => {
-        console.info(err)
+            this.$router.push({ path: `/patient/list` })
+          }).catch(err => {
+            console.info(err)
+          })
+        } else {
+          return false
+        }
       })
     }
+  },
+  created () {
+    getUserWards().then(data => {
+      this.procedureList = data.data.map(item => {
+        return {
+          id: item.id,
+          name: item.name
+        }
+      })
+    })
+    getDeviceList({ current: 1, size: ALL_RECORD, bind: '', state: '' }).then(data => {
+      this.deviceList = data.data.records.map(item => {
+        return {
+          id: item.id,
+          name: item.name
+        }
+      })
+    })
+    this.patientForm.id = this.$route.params.id
+    getPatientInfo(this.patientForm.id).then(data => {
+      console.info(data)
+      let info = data.data
+      this.patientForm.name = info.name
+      this.patientForm.hosNumber = info.hosNumber
+      this.patientForm.bedNumber = info.bedNumber
+      this.patientForm.deviceId = info.deviceId
+      this.patientForm.wardsId = info.wardsId
+    }).catch(err => {
+      console.info(err)
+    })
   }
+}
 </script>
