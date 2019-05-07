@@ -16,7 +16,7 @@ export default new Router({
     },
     {
       path: '/login',
-      name: '报警信息-登录',
+      name: '登录-脉氧脉率管理后台',
       component: login,
       meta: { hiddenCommonComponents: true }
     },

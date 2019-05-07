@@ -66,12 +66,8 @@ export default {
             } else {
               this.$router.push('/alarm')
             }
-          }).catch(err => {
-            console.info(err)
           })
         })
-      }).catch(err => {
-        console.info(err)
       })
     }
   }

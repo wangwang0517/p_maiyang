@@ -15,3 +15,6 @@ export function getPatientInfo (id) {
 export function savePatient (data) {
   return http.post('/mo/patient/add', data)
 }
+export function updatePatient (data) {
+  return http.put('/mo/patient/mod', data)
+}

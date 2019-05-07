@@ -36,7 +36,6 @@
           </el-option>
         </el-select>
       </el-form-item>
-
       <el-form-item>
         <el-button type="primary" @click="submitForm('patientForm')">提交</el-button>
       </el-form-item>
