@@ -1,6 +1,7 @@
 import axios from 'axios'
 import store from '../store'
-import { MessageBox } from 'element-ui'
+import router from "../router"
+import { MessageBox, Message } from 'element-ui'
 
 const service = axios.create({
   baseURL: 'http://106.13.91.109:1234', // api 的 base_url
@@ -37,9 +38,9 @@ service.interceptors.response.use(
         MessageBox.alert('你的登录信息已过期', '提示', {
           confirmButtonText: '确定',
           callback: action => {
-            store.dispatch('login').then(() => {
-              location.reload() // 为了重新实例化vue-router对象 避免bug
-            })
+            store.commit('clearUserInfo');
+            router.push("/login")
+            location.reload()
           }
         })
       } else {
@@ -53,15 +54,11 @@ service.interceptors.response.use(
     }
   },
   error => {
-    if (error.response) {
-      console.log(error.response.data)
-      console.log(error.response.status)
-      console.log(error.response.headers)
-    }
-    MessageBox.alert(error.response.data.msg, '提示', {
-      confirmButtonText: '确定'
-    })
-    return Promise.reject(error)
+    console.info(error)
+    Message('登录信息已失效');
+    store.commit('clearUserInfo');
+    router.push("/login")
+    location.reload()
   }
 )
 

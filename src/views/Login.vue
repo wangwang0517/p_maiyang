@@ -55,11 +55,11 @@ export default {
   },
   methods: {
     submitForm (formName) {
-      this.$refs[formName].validate(async valid => {
+      this.$refs[formName].validate(valid => {
         if (!valid) {
           return false
         }
-        await login({ username: this.loginForm.username, password: Base64.encode(this.loginForm.password) }).then(data => {
+        login({ username: this.loginForm.username, password: Base64.encode(this.loginForm.password) }).then(data => {
           this.$store.dispatch('saveLoginResult', data.data).then(() => {
             if (this.$store.state.permission === 'ADMIN') {
               this.$router.push('/system/edit')
