@@ -32,8 +32,8 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="职称" prop="typeId">
-        <el-select v-model="doctorNurseForm.typeId" placeholder="请选择职称" style="width: 100%">
+      <el-form-item label="类别" prop="typeId">
+        <el-select v-model="doctorNurseForm.typeId" placeholder="请选择类别" style="width: 100%">
           <el-option v-for="item in jobList" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
@@ -74,7 +74,7 @@ export default {
     }
     let validateType = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('请选择职称'))
+        callback(new Error('请选择类别'))
       } else {
         callback()
       }
@@ -93,6 +93,13 @@ export default {
         callback()
       }
     }
+    let validatePhone = (rule, value, callback) => {
+      if(!(/^1(3|4|5|7|8)\d{9}$/.test(value))){
+        callback(new Error('请输入正确的手机号码'))
+      } else {
+        callback()
+      }
+    }
     return {
       jobList: POSITION,
       procedureList: [],
@@ -101,8 +108,8 @@ export default {
         password: '',
         name: '',
         typeId: '',
-        typeName: '',
         workno: '',
+        phone: '',
         wardsId: []
       },
       doctorNurseFormRules: {
@@ -111,7 +118,8 @@ export default {
         name: [{ validator: validateName, trigger: 'blur' }],
         typeId: [{ validator: validateType, trigger: 'blur' }],
         workno: [{ validator: validateWorkNo, trigger: 'blur' }],
-        wardsId: [{ validator: validatewardsId, trigger: 'blur' }]
+        wardsId: [{ validator: validatewardsId, trigger: 'blur' }],
+        phone: [{ validator: validatePhone, trigger: 'blur' }]
       }
     }
   },
