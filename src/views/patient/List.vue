@@ -56,7 +56,7 @@ export default {
   data () {
     return {
       loading: true,
-      history: '',
+      history: false,
       search: '',
       totalPage: 1,
       currentPage: 1,
