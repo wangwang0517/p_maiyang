@@ -58,7 +58,6 @@ service.interceptors.response.use(
     Message('登录信息已失效')
     store.commit('clearUserInfo')
     router.push('/login')
-    location.reload()
   }
 )
 

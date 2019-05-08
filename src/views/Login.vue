@@ -60,13 +60,15 @@ export default {
           return false
         }
         login({ username: this.loginForm.username, password: Base64.encode(this.loginForm.password) }).then(data => {
-          this.$store.dispatch('saveLoginResult', data.data).then(() => {
-            if (this.$store.state.permission === 'ADMIN') {
-              this.$router.push('/system/edit')
-            } else {
-              this.$router.push('/alarm')
-            }
-          })
+          if (data && data.data) {
+            this.$store.dispatch('saveLoginResult', data.data).then(() => {
+              if (this.$store.state.permission === 'ADMIN') {
+                this.$router.push('/system/edit')
+              } else {
+                this.$router.push('/alarm')
+              }
+            })
+          }
         })
       })
     }

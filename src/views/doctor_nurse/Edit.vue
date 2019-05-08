@@ -87,7 +87,7 @@ export default {
       }
     }
     let validatePhone = (rule, value, callback) => {
-      if(!(/^1(3|4|5|7|8)\d{9}$/.test(value))){
+      if (!(/^1(3|4|5|7|8)\d{9}$/.test(value))) {
         callback(new Error('请输入正确的手机号码'))
       } else {
         callback()
@@ -112,7 +112,7 @@ export default {
         typeId: [{ validator: validateType, trigger: 'blur' }],
         workno: [{ validator: validateWorkNo, trigger: 'blur' }],
         wardsId: [{ validator: validatewardsId, trigger: 'blur' }],
-        phone: [{ validator: validatePhone, trigger: 'blur' }],
+        phone: [{ validator: validatePhone, trigger: 'blur' }]
       }
     }
   },
