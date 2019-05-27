@@ -35,6 +35,7 @@ export default new Vuex.Store({
       state.userInfo = null
       state.token = null
       state.permission = null
+      state.waringCount = 0
       window.localStorage.removeItem('token')
       window.localStorage.removeItem('permission')
       window.localStorage.removeItem('userInfo')
