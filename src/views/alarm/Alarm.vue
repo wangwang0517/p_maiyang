@@ -61,7 +61,15 @@ export default {
       tableData: []
     }
   },
+  watch: {
+    getWarningCount () {
+      this.$store.commit('resetWaringCount')
+    }
+  },
   computed: {
+    getWarningCount () {
+      return this.$store.state.waringCount
+    },
     getLevel () {
       return function (level) {
         return getUrgentLevelFormatterHtml(level)
@@ -105,6 +113,7 @@ export default {
     }
   },
   created () {
+    this.$store.commit('resetWaringCount')
     this.loadData()
   }
 }

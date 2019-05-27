@@ -14,7 +14,6 @@ export function getUrgentLevelFormatterClass (level) {
 }
 
 export function getUrgentLevelFormatterHtml (level) {
-  console.info(level)
   switch (Number.parseInt(level)) {
     case 1 :
       return '一级'

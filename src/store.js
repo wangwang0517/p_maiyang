@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -8,7 +7,8 @@ export default new Vuex.Store({
     userInfo: JSON.parse(window.localStorage.getItem('userInfo') || '{}'),
     isLogin: !!window.localStorage.getItem('userInfo'),
     token: window.localStorage.getItem('token') || null,
-    permission: window.localStorage.getItem('permission') || null
+    permission: window.localStorage.getItem('permission') || null,
+    waringCount: 0
   },
   getters: {
     user (state) {
@@ -39,6 +39,19 @@ export default new Vuex.Store({
       window.localStorage.removeItem('permission')
       window.localStorage.removeItem('userInfo')
       window.location.reload()
+    },
+    resetWaringCount (state) {
+      state.waringCount = 0
+    },
+    'SOCKET_ALARM': function (state,data) {
+      console.log('SOCKET_ALARM')
+      console.log(data)
+      state.waringCount++
+    },
+    'SOCKET_UPLOAD': function (state, data) {
+      console.log('SOCKET_UPLOAD')
+      console.log(data)
+      state.waringCount++
     }
   },
   actions: {

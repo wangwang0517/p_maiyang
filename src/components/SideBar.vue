@@ -10,11 +10,17 @@
     <el-submenu index="alarm" v-if="this.$store.state.permission == 'USER'">
       <template slot="title">
         <font-awesome-icon icon="heartbeat" />
-        <span slot="title" class="menu-label">报警管理</span>
+        <span slot="title" class="menu-label">
+          报警管理
+          <sup v-if="this.$store.state.waringCount > 0" class="el-badge__content el-badge__content--undefined is-fixed">!</sup>
+        </span>
       </template>
       <el-menu-item index="/alarm">
         <font-awesome-icon icon="clipboard-list" />
-        <span slot="title" class="menu-label">报警信息</span>
+        <span slot="title" class="menu-label">
+          报警信息
+          <sup v-if="this.$store.state.waringCount > 0" class="el-badge__content el-badge__content--undefined is-fixed">{{this.$store.state.waringCount}}</sup>
+        </span>
       </el-menu-item>
     </el-submenu>
 
@@ -100,19 +106,42 @@
 </template>
 
 <script>
+import store from '../store'
+import VueSocketIO from 'vue-socket.io'
 export default {
   props: {
     isCollapse: {
       default: false
     }
   },
-  name: 'SideBar'
+  name: 'SideBar',
+  created () {
+    if (this.$store.state.permission === 'USER') {
+      /* eslint-disable no-new */
+      new VueSocketIO({
+        debug: true,
+        connection: '106.13.91.109:6789',
+        vuex: {
+          store,
+          mutationPrefix: 'SOCKET_',
+          actionPrefix: 'SOCKET_'
+        },
+        options: {
+          query: 'token=' + store.state.token,
+          path: '/info',
+          autoConnect: true
+        }
+      })
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
   span.menu-label{
+    position: relative;
     padding-left: 5px;
+    padding-right: 15px;
   }
   .myml-el-menu-vertical{
     overflow: hidden;
