@@ -4,7 +4,7 @@ import router from '../router'
 import { MessageBox, Message } from 'element-ui'
 
 const service = axios.create({
-  baseURL: 'http://106.13.91.109:1234', // api 的 base_url
+  baseURL: 'http://118.190.36.51:1234', // api 的 base_url
   withCredentials: false, // 跨域请求时发送 cookies
   timeout: 5000,
   headers: {

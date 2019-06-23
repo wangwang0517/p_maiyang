@@ -44,7 +44,7 @@ export default new Vuex.Store({
     resetWaringCount (state) {
       state.waringCount = 0
     },
-    'SOCKET_ALARM': function (state,data) {
+    'SOCKET_ALARM': function (state, data) {
       console.log('SOCKET_ALARM')
       console.log(data)
       state.waringCount++

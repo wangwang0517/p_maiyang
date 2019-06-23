@@ -120,7 +120,7 @@ export default {
       /* eslint-disable no-new */
       new VueSocketIO({
         debug: true,
-        connection: '106.13.91.109:6789',
+        connection: '118.190.36.51:6789',
         vuex: {
           store,
           mutationPrefix: 'SOCKET_',

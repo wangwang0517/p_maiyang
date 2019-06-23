@@ -11,9 +11,12 @@
         <el-button type="text" >筛选：</el-button>
         <el-input placeholder="请输入内容" v-model="search" class="input-with-select">
           <el-select v-model="history" slot="prepend">
-            <el-option label="全部" value=""></el-option>
-            <el-option label="绑定中" value="false"></el-option>
-            <el-option label="已解绑" value="true"></el-option>
+            <el-option
+              v-for="item in historyList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
         </el-input>
@@ -57,6 +60,16 @@ export default {
     return {
       loading: true,
       history: false,
+      historyList: [{
+        value: '',
+        label: '全部'
+      }, {
+        value: false,
+        label: '绑定中'
+      }, {
+        value: true,
+        label: '已解绑'
+      }],
       search: '',
       totalPage: 1,
       currentPage: 1,

@@ -63,6 +63,8 @@ export default {
   },
   watch: {
     getWarningCount () {
+      this.currentPage = 1
+      this.loadData()
       this.$store.commit('resetWaringCount')
     }
   },

@@ -25,6 +25,23 @@
         </el-table-column>
       </el-table>
       <div class="line"></div>
+      <el-table :data="deviceInfo" style="width: 100%" header-row-class-name="table-header">
+        <el-table-column prop="name" label="设备名称"></el-table-column>
+        <el-table-column prop="model" label="设备类型"></el-table-column>
+        <el-table-column prop="power" label="电量"></el-table-column>
+        <el-table-column prop="serialId" label="序列号"></el-table-column>
+        <el-table-column prop="state" label="设备状态">
+          <template slot-scope="scope">
+            <el-tag :type="getStateFormatter(scope.row.state)" close-transition><strong>{{getState(scope.row.state)}}</strong></el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="bindFlag" label="绑定状态">
+          <template slot-scope="scope">
+            <el-tag :type="getBindFlagFormatter(scope.row.bindFlag)" close-transition><strong>{{getBindFlag(scope.row.bindFlag)}}</strong></el-tag>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div class="line"></div>
       <el-table v-loading="loading" :data="alarmData" style="width: 100%" header-row-class-name="table-header" size="mini">
         <el-table-column label="报警历史" align="center">
           <el-table-column prop="oxygen" label="脉氧值"></el-table-column>
@@ -76,7 +93,8 @@
 import { getPatientInfo, unbindPatient } from '../../api/patient'
 import { PAGE_SIZE } from '../../utils/default'
 import { getPatientAlarmList, getPatientRecordList, handlePatientAlarm } from '../../api/alarm'
-import { getUrgentLevelFormatterClass, getUrgentLevelFormatterHtml, getAlarmStateFormatterClass, getAlarmStateFormatterHtml } from '../../utils/format'
+import { getUrgentLevelFormatterClass, getUrgentLevelFormatterHtml, getAlarmStateFormatterClass, getAlarmStateFormatterHtml, getDeviceBindFlagFormatterHtml, getDeviceBindFlagFormatterClass, getDeviceStateFormatterHtml, getDeviceStateFormatterClass } from '../../utils/format'
+import { getDeviceInfo } from '../../api/device'
 
 export default {
   data () {
@@ -89,10 +107,31 @@ export default {
       alarmData: [],
       recordTotalPage: 1,
       recordCurrentPage: 1,
-      recordData: []
+      recordData: [],
+      deviceInfo: []
     }
   },
   computed: {
+    getBindFlag () {
+      return function (state) {
+        return getDeviceBindFlagFormatterHtml(state)
+      }
+    },
+    getBindFlagFormatter () {
+      return function (state) {
+        return getDeviceBindFlagFormatterClass(state)
+      }
+    },
+    getState () {
+      return function (state) {
+        return getDeviceStateFormatterHtml(state)
+      }
+    },
+    getStateFormatter () {
+      return function (state) {
+        return getDeviceStateFormatterClass(state)
+      }
+    },
     getLevel () {
       return function (level) {
         return getUrgentLevelFormatterHtml(level)
@@ -119,7 +158,12 @@ export default {
       this.loading = true
       getPatientInfo(this.id).then(data => {
         this.userData = new Array(data.data)
-        this.loading = false
+        getDeviceInfo({ id: data.data.deviceId }).then(data => {
+          this.deviceInfo = new Array(data.data)
+          this.loading = false
+        }).catch(() => {
+          this.loading = false
+        })
       }).catch(() => {
         this.loading = false
       })
